@@ -345,6 +345,12 @@ def _validate_no_arguments(logger) -> None:
     help="Specify rule core ID to exclude, ex. CORE-000001. Can be specified multiple times",
 )
 @click.option(
+    "--rules-tags",
+    "-rt",
+    required=False,
+    help="Filter rules by one or more tags (comma-separated) from resources/rules_with_tags.json (excludes --rules and --exclude-rules)",
+)
+@click.option(
     "--local-rules",
     "-lr",
     required=False,
@@ -453,6 +459,7 @@ def validate(  # noqa
     snomed_url: str,
     rules: tuple[str],
     exclude_rules: tuple[str],
+    rules_tags: str,
     local_rules: str,
     custom_standard: bool,
     progress: str,
@@ -469,6 +476,9 @@ def validate(  # noqa
     Example:
 
     python core.py -s SDTM -v 3.4 -d /path/to/datasets
+
+    --rules-tags example:
+    python core.py --rules-tags "adverse events","demographics"
     """
 
     # Validate conditional options
@@ -486,9 +496,36 @@ def validate(  # noqa
             )
             ctx.exit(2)
 
-    if exclude_rules and rules:
-        logger.error("Cannot use both --rules and --exclude-rules flags together.")
+    # Enforce exclusivity
+    if sum(bool(x) for x in [rules, exclude_rules, rules_tags]) > 1:
+        logger.error("--rules, --exclude-rules and --rules-tags are mutually exclusive. Use only one of these options.")
         ctx.exit(2)
+
+    # If rules_tags is provided, load the correct core_ids from JSON (supports multiple tags)
+    if rules_tags:
+        rules_with_tags_path = os.path.join(os.path.dirname(__file__), "resources", "rules_with_tags.json")
+        if not os.path.exists(rules_with_tags_path):
+            logger.error(f"rules_with_tags.json not found at {rules_with_tags_path}")
+            ctx.exit(2)
+        with open(rules_with_tags_path, encoding="utf-8") as f:
+            rules_data = json.load(f)
+
+        # equates:
+        # tags = []
+        # substrings = rules_tags.split(",") devide into substrings
+        # for rule in substrings: for each rule in substrings
+        #     if rule.strip(): if the rule is not just whitespace
+        #         tags.append(rule.strip())
+        tags = [t.strip() for t in rules_tags.split(",") if t.strip()]
+        filtered_core_ids = set()
+        for r in rules_data:
+            rules_tags = r.get("tags", [])
+            if any(tag in rules_tags for tag in tags):
+                filtered_core_ids.add(r["core_id"])
+        if not filtered_core_ids:
+            logger.error(f"No rules found with tags: {', '.join(tags)}")
+            ctx.exit(2)
+        rules = tuple(filtered_core_ids)
 
     cache_path: str = os.path.join(os.path.dirname(__file__), cache)
 

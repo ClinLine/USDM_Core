@@ -1,0 +1,830 @@
+[
+  {
+    "core_id": "CORE-000402",
+    "tags": ["Timeline", "Test"]
+  },
+  {
+    "core_id": "CORE-000403",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000404",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000407",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000408",
+    "tags": ["Activity Details", "Test"]
+  },
+  {
+    "core_id": "CORE-000413",
+    "tags": "Amendments"
+  },
+  {
+    "core_id": "CORE-000414",
+    "tags": "Arms, Epochs & Elements"
+  },
+  {
+    "core_id": "CORE-000416",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000417",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000419",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000423",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000424",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000427",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000428",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000449",
+    "tags": "Arms, Epochs & Elements"
+  },
+  {
+    "core_id": "CORE-000804",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000805",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-000806",
+    "tags": "Amendments"
+  },
+  {
+    "core_id": "CORE-000807",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000808",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000809",
+    "tags": "Arms, Epochs & Elements"
+  },
+  {
+    "core_id": "CORE-000811",
+    "tags": "Activity Details"
+  },
+  {
+    "core_id": "CORE-000812",
+    "tags": "Activity Details"
+  },
+  {
+    "core_id": "CORE-000813",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000814",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000815",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-000816",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000817",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000818",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000819",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000820",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000821",
+    "tags": "Footnotes"
+  },
+  {
+    "core_id": "CORE-000822",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000823",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000824",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000825",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000826",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000827",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000828",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000829",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000830",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000831",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000832",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000833",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000834",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000835",
+    "tags": "Arms, Epochs & Elements"
+  },
+  {
+    "core_id": "CORE-000836",
+    "tags": "Arms, Epochs & Elements"
+  },
+  {
+    "core_id": "CORE-000837",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000838",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000839",
+    "tags": "Arms, Epochs & Elements"
+  },
+  {
+    "core_id": "CORE-000840",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000849",
+    "tags": "Arms, Epochs & Elements"
+  },
+  {
+    "core_id": "CORE-000851",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000854",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-000855",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000856",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000857",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-000858",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000859",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000860",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000861",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000868",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000869",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000870",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000871",
+    "tags": "Objectives & Endpoints"
+  },
+  {
+    "core_id": "CORE-000873",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000874",
+    "tags": "Objectives & Endpoints"
+  },
+  {
+    "core_id": "CORE-000875",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-000877",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000878",
+    "tags": "Footnotes"
+  },
+  {
+    "core_id": "CORE-000879",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000900",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000904",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000905",
+    "tags": "Timeline "
+  },
+  {
+    "core_id": "CORE-000907",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000925",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000930",
+    "tags": "Amendments"
+  },
+  {
+    "core_id": "CORE-000931",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000933",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000935",
+    "tags": "Full, schema checking"
+  },
+  {
+    "core_id": "CORE-000937",
+    "tags": "Full, schema checking"
+  },
+  {
+    "core_id": "CORE-000938",
+    "tags": "Full, schema checking"
+  },
+  {
+    "core_id": "CORE-000939",
+    "tags": "Objectives & Endpoints"
+  },
+  {
+    "core_id": "CORE-000940",
+    "tags": "Objectives & Endpoints"
+  },
+  {
+    "core_id": "CORE-000941",
+    "tags": "Arms"
+  },
+  {
+    "core_id": "CORE-000942",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000943",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-000944",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-000945",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000948",
+    "tags": "Arms, Epochs & Elements"
+  },
+  {
+    "core_id": "CORE-000949",
+    "tags": "Full, schema checking"
+  },
+  {
+    "core_id": "CORE-000950",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000951",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-000954",
+    "tags": "Activity Details"
+  },
+  {
+    "core_id": "CORE-000955",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000956",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000957",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000958",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000959",
+    "tags": "Amendments"
+  },
+  {
+    "core_id": "CORE-000961",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-000962",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-000963",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-000964",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-000965",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-000966",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000967",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000968",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-000969",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000970",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-000971",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-000972",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-000973",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-000974",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-000975",
+    "tags": "Interventions (Devices)"
+  },
+  {
+    "core_id": "CORE-000976",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000977",
+    "tags": "Interventions (Devices)"
+  },
+  {
+    "core_id": "CORE-000978",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000979",
+    "tags": "Study Design (interventional)"
+  },
+  {
+    "core_id": "CORE-000980",
+    "tags": "Study Design"
+  },
+  {
+    "core_id": "CORE-000981",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-000982",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-000983",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000984",
+    "tags": "Amendments"
+  },
+  {
+    "core_id": "CORE-000985",
+    "tags": "Amendments"
+  },
+  {
+    "core_id": "CORE-000986",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-000987",
+    "tags": "Study Design (interventional)"
+  },
+  {
+    "core_id": "CORE-000988",
+    "tags": "Study Design (interventional)"
+  },
+  {
+    "core_id": "CORE-000989",
+    "tags": "Study Design (interventional)"
+  },
+  {
+    "core_id": "CORE-000990",
+    "tags": "Study Design"
+  },
+  {
+    "core_id": "CORE-000991",
+    "tags": "Study Design (observational)"
+  },
+  {
+    "core_id": "CORE-000992",
+    "tags": "Study Design (observational)"
+  },
+  {
+    "core_id": "CORE-000994",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000995",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-000996",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-000997",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-000998",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-000999",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-001000",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-001001",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-001002",
+    "tags": "Study Design"
+  },
+  {
+    "core_id": "CORE-001003",
+    "tags": "Study Design"
+  },
+  {
+    "core_id": "CORE-001004",
+    "tags": "Study Design (observational)"
+  },
+  {
+    "core_id": "CORE-001005",
+    "tags": "Study Design (observational)"
+  },
+  {
+    "core_id": "CORE-001006",
+    "tags": "Activity Details"
+  },
+  {
+    "core_id": "CORE-001007",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-001008",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-001009",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-001010",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-001011",
+    "tags": "Amendments"
+  },
+  {
+    "core_id": "CORE-001012",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-001013",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-001014",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-001015",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-001016",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-001017",
+    "tags": "Study Design"
+  },
+  {
+    "core_id": "CORE-001018",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-001019",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-001020",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-001021",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-001022",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-001023",
+    "tags": "Study Design (interventional)"
+  },
+  {
+    "core_id": "CORE-001024",
+    "tags": "Study Design (interventional)"
+  },
+  {
+    "core_id": "CORE-001025",
+    "tags": "General study design (observational)"
+  },
+  {
+    "core_id": "CORE-001026",
+    "tags": "Arms, Epochs & Elements"
+  },
+  {
+    "core_id": "CORE-001027",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-001028",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-001029",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-001030",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-001031",
+    "tags": "Amendments"
+  },
+  {
+    "core_id": "CORE-001032",
+    "tags": "Study Design"
+  },
+  {
+    "core_id": "CORE-001033",
+    "tags": "Study Design"
+  },
+  {
+    "core_id": "CORE-001035",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-001036",
+    "tags": "Objectives & Endpoints"
+  },
+  {
+    "core_id": "CORE-001038",
+    "tags": "Footnotes"
+  },
+  {
+    "core_id": "CORE-001039",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-001041",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-001042",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-001045",
+    "tags": "Arms"
+  },
+  {
+    "core_id": "CORE-001047",
+    "tags": "Activity Details"
+  },
+  {
+    "core_id": "CORE-001048",
+    "tags": "Arms, Epochs & Elements"
+  },
+  {
+    "core_id": "CORE-001049",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-001051",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-001052",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-001053",
+    "tags": "Abbreviations"
+  },
+  {
+    "core_id": "CORE-001054",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-001055",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-001056",
+    "tags": "Study Design (observational)"
+  },
+  {
+    "core_id": "CORE-001057",
+    "tags": "Study Design (observational)"
+  },
+  {
+    "core_id": "CORE-001058",
+    "tags": "Study Design"
+  },
+  {
+    "core_id": "CORE-001059",
+    "tags": "Study Design"
+  },
+  {
+    "core_id": "CORE-001060",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-001061",
+    "tags": "Population & Eligibility"
+  },
+  {
+    "core_id": "CORE-001062",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-001063",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-001065",
+    "tags": "Interventions"
+  },
+  {
+    "core_id": "CORE-001066",
+    "tags": "Timeline"
+  },
+  {
+    "core_id": "CORE-001067",
+    "tags": "Abbreviations"
+  },
+  {
+    "core_id": "CORE-001068",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-001069",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-001070",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-001071",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-001072",
+    "tags": "Organizations & Roles"
+  },
+  {
+    "core_id": "CORE-001073",
+    "tags": "Documents"
+  },
+  {
+    "core_id": "CORE-001074",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-001075",
+    "tags": "All, when included"
+  },
+  {
+    "core_id": "CORE-001076",
+    "tags": "Activity Details"
+  },
+  {
+    "core_id": "CORE-001077",
+    "tags": "Interventions"
+  }
+]
