@@ -7,8 +7,19 @@ import pandas as pd
 from openpyxl import Workbook
 
 from cdisc_rules_engine.config.config import ConfigService
+from cdisc_rules_engine.exceptions.custom_exceptions import ExcelTestDataError
 from cdisc_rules_engine.services.data_services import ExcelDataService
+from cdisc_rules_engine.enums.excel_test_sheets import (
+    ExcelDataSheets,
+)
 from cdisc_rules_engine.models.dataset import PandasDataset
+
+
+@pytest.fixture(autouse=True)
+def reset_excel_data_service():
+    ExcelDataService._instance = None
+    yield
+    ExcelDataService._instance = None
 
 
 @pytest.mark.parametrize(
@@ -27,6 +38,28 @@ def test_get_dataset(dataset_name):
     )
     data = data_service.get_dataset(dataset_name=dataset_name)
     assert isinstance(data, PandasDataset)
+
+
+@pytest.mark.parametrize(
+    "dataset_name",
+    ("ex.xpt", "lb.xpt", "ds.xpt"),
+)
+def test_whitespace_get_dataset_raises(dataset_name):
+    dataset_path = (
+        f"{os.path.dirname(__file__)}/../../../resources/Datasets_whitespace.xlsx"
+    )
+    mock_cache = MagicMock()
+    mock_cache.get_dataset.return_value = None
+    data_service = ExcelDataService.get_instance(
+        config=ConfigService(),
+        cache_service=mock_cache,
+        dataset_implementation=PandasDataset,
+        dataset_path=dataset_path,
+    )
+    with pytest.raises(ExcelTestDataError) as exc_info:
+        data_service.get_dataset(dataset_name=dataset_name)
+    assert "leading/trailing whitespace" in str(exc_info.value.message)
+    assert any(col in exc_info.value.message for col in ["STUDYID", "DOMAIN", "EXSEQ"])
 
 
 @pytest.mark.parametrize(
@@ -174,4 +207,88 @@ def test_na_value_preserved_not_converted_to_nan():
 
     finally:
         # Cleanup temporary file
+        os.unlink(temp_path)
+
+
+def test_get_datasets_missing_datasets_sheet_raises_friendly_error():
+    """
+    When the workbook has no 'Datasets' sheet (e.g. tab named 'datasets' instead),
+    get_datasets() raises ExcelTestDataError with message that includes
+    case-sensitive guidance.
+    """
+    with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp_file:
+        temp_path = tmp_file.name
+
+    try:
+        wb = Workbook()
+        wb.active.title = "datasets"
+        wb.active.append(["Filename", "Label", "Dataset Name"])
+        wb.active.append(["dm.xpt", "Demographics", "DM"])
+        wb.create_sheet("dm.xpt")
+        dm_sheet = wb["dm.xpt"]
+        dm_sheet.append(["USUBJID", "DOMAIN"])
+        dm_sheet.append(["Study ID", "Domain"])
+        dm_sheet.append(["Char", "Char"])
+        dm_sheet.append(["20", "2"])
+        dm_sheet.append(["SUBJ001", "DM"])
+        wb.save(temp_path)
+        wb.close()
+
+        ExcelDataService._instance = None
+        mock_cache = MagicMock()
+        mock_cache.get_dataset.return_value = None
+
+        data_service = ExcelDataService(
+            mock_cache, MagicMock(), MagicMock(), dataset_path=temp_path
+        )
+
+        with pytest.raises(ExcelTestDataError) as exc_info:
+            data_service.get_datasets()
+
+        msg = str(exc_info.value)
+        assert ExcelDataSheets.DATASETS_SHEET_NAME.value in msg
+    finally:
+        os.unlink(temp_path)
+
+
+def test_get_datasets_missing_label_column_raises_friendly_error():
+    """
+    When the 'Datasets' sheet exists but is missing the 'Label' column,
+    get_datasets() raises ExcelTestDataError with column names and
+    case-sensitive guidance.
+    """
+    with tempfile.NamedTemporaryFile(suffix=".xlsx", delete=False) as tmp_file:
+        temp_path = tmp_file.name
+
+    try:
+        wb = Workbook()
+        datasets_sheet = wb.active
+        datasets_sheet.title = ExcelDataSheets.DATASETS_SHEET_NAME.value
+        datasets_sheet.append(["Filename", "label", "Dataset Name"])
+        datasets_sheet.append(["dm.xpt", "Demographics", "DM"])
+        wb.create_sheet("dm.xpt")
+        dm_sheet = wb["dm.xpt"]
+        dm_sheet.append(["USUBJID", "DOMAIN"])
+        dm_sheet.append(["Study ID", "Domain"])
+        dm_sheet.append(["Char", "Char"])
+        dm_sheet.append(["20", "2"])
+        dm_sheet.append(["SUBJ001", "DM"])
+        wb.save(temp_path)
+        wb.close()
+
+        ExcelDataService._instance = None
+        mock_cache = MagicMock()
+        mock_cache.get_dataset.return_value = None
+
+        data_service = ExcelDataService(
+            mock_cache, MagicMock(), MagicMock(), dataset_path=temp_path
+        )
+
+        with pytest.raises(ExcelTestDataError) as exc_info:
+            data_service.get_datasets()
+
+        msg = str(exc_info.value)
+        assert "Label" in msg
+        assert "column" in msg.lower()
+    finally:
         os.unlink(temp_path)
