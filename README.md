@@ -1,3 +1,5 @@
+# Note: this is a forked version of CDISC's Rules engine. This Forked version enables the run of custom sets of USDM CORE rules.
+
 <p align="center">
   <a href="https://www.cdisc.org">
   <img src="./resources/assets/CORE_logo_sm.png">
@@ -9,6 +11,7 @@
 # cdisc-rules-engine
 
 Open source offering of the CDISC Rules Engine, a tool designed for validating clinical trial data against data standards.
+
 
 ## Quick Start
 
