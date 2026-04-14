@@ -1,4 +1,4 @@
-# Note: this is a forked version of CDISC's Rules engine. This Forked version enables the run of custom sets of USDM CORE rules.
+# Note: this is a forked version of CDISC's Rules engine. This forked version enables the run of custom sets of USDM CORE rules.
 
 <p align="center">
   <a href="https://www.cdisc.org">
