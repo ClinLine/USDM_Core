@@ -1,5 +1,12 @@
 # Note: this is a forked version of CDISC's Rules engine. This forked version enables the run of custom sets of USDM CORE rules.
 See our webinar for further explanation of the adaptions we did: https://www.youtube.com/watch?v=DSxehj-UPBU
+the following updates are included:
+- In the resources a json file is included indicating the tags for each of the USDM core rules. This file can be adapted based on new insights and preferences.
+- .gitignore
+- to be completed
+Note that the initial docker file does not include the updates in this fork.
+
+The below information is from the forked CDISC repository:
 
 <p align="center">
   <a href="https://www.cdisc.org">
