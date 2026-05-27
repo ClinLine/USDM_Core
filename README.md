@@ -2,8 +2,10 @@
 See our webinar for further explanation of the adaptions we did: https://www.youtube.com/watch?v=DSxehj-UPBU
 the following updates are included:
 - In the resources a json file is included indicating the tags for each of the USDM core rules. This file can be adapted based on new insights and preferences.
-- .gitignore
-- to be completed
+- Updated core.py
+Adjusted run statement to be applied:
+- python core.py validate -s usdm -v 4-0 -dp USDM_file.json -rt "RulesetName", "output name"
+  
 Note that the initial docker file does not include the updates in this fork.
 
 The below information is from the forked CDISC repository:
