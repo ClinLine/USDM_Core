@@ -12,6 +12,7 @@ from odmlib.loader import ODMLoader
 import odmlib.define_2_1.model  # noqa F401
 import odmlib.define_2_0.model  # noqa F401
 
+from cdisc_rules_engine.constants.domains import SUPPLEMENTARY_DOMAINS
 from cdisc_rules_engine.exceptions.custom_exceptions import (
     DomainNotFoundInDefineXMLError,
     FailedSchemaValidation,
@@ -19,7 +20,6 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
 from cdisc_rules_engine.models.define import ValueLevelMetadata
 from cdisc_rules_engine.services import logger
 from cdisc_rules_engine.utilities.decorators import cached
-from cdisc_rules_engine.utilities.utils import is_supp_domain
 
 
 @dataclass
@@ -36,6 +36,14 @@ class StandardsCTMetadata:
 
     type: str = None
     publishing_set: str = None
+
+
+@staticmethod
+def is_supp_domain(dataset_domain: str) -> bool:
+    """
+    Returns true if domain name starts with SUPP or SQ
+    """
+    return dataset_domain.startswith(SUPPLEMENTARY_DOMAINS)
 
 
 class BaseDefineXMLReader(ABC):
@@ -171,7 +179,7 @@ class BaseDefineXMLReader(ABC):
         self, domain_name: str = None, name: str = None
     ) -> List[dict]:
         logger.info(
-            f"Extracting variables metadata from Define-XML. domain_name={domain_name}"
+            f"Extracting variables metadata from Define-XML. name={name}, domain_name={domain_name}"
         )
         try:
             metadata = self._odm_loader.MetaDataVersion()
@@ -279,9 +287,9 @@ class BaseDefineXMLReader(ABC):
                 f"Dataset {dataset_name} is not found in Define XML"
             )
 
-    def _get_domain_metadata(self, metadata, domain_name, name: str = None):
+    def _get_domain_metadata(self, metadata, domain_name: str = None, name: str = None):
         try:
-            if name:
+            if name and domain_name:
                 domain_metadata = next(
                     item
                     for item in metadata.ItemGroupDef
@@ -289,12 +297,14 @@ class BaseDefineXMLReader(ABC):
                 )
             else:
                 domain_metadata = next(
-                    item for item in metadata.ItemGroupDef if item.Domain == domain_name
+                    item
+                    for item in metadata.ItemGroupDef
+                    if item.Name == name or item.Domain == domain_name
                 )
             return domain_metadata
         except StopIteration:
             raise DomainNotFoundInDefineXMLError(
-                f"Domain {domain_name} is not found in Define XML"
+                f"name={name}, domain={domain_name} is not found in Define XML"
             )
 
     def _get_all_dataset_and_supp_metadata(self, metadata, dataset_name):
@@ -382,6 +392,7 @@ class BaseDefineXMLReader(ABC):
             "define_variable_codelist_coded_codes": [],
             "define_variable_mandatory": None,
             "define_variable_has_comment": False,
+            "define_variable_has_method": False,
         }
         if itemdef:
             data["define_variable_mandatory"] = itemref.Mandatory
@@ -418,6 +429,7 @@ class BaseDefineXMLReader(ABC):
                 itemref, index
             )
             data["define_variable_has_comment"] = itemdef.CommentOID is not None
+            data["define_variable_has_method"] = itemref.MethodOID is not None
         return data
 
     def _get_codelist_ccode(self, codelist):
@@ -470,6 +482,9 @@ class BaseDefineXMLReader(ABC):
     def get_define_version(self) -> Optional[str]:
         """Use to extract DefineVersion from file"""
         self.read()
+        if hasattr(self, "_original_define_version") and self._original_define_version:
+            return self._original_define_version
+
         mdv_attrib: dict = self._odm_loader.loader.parser.mdv[0].attrib
         for key, val in mdv_attrib.items():
             if key.endswith("DefineVersion"):

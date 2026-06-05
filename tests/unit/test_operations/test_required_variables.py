@@ -8,11 +8,12 @@ from cdisc_rules_engine.config.config import ConfigService
 
 import pandas as pd
 import pytest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 from cdisc_rules_engine.constants.classes import GENERAL_OBSERVATIONS_CLASS
 from cdisc_rules_engine.enums.variable_roles import VariableRoles
 from cdisc_rules_engine.models.operation_params import OperationParams
+from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.operations.required_variables import RequiredVariables
 from cdisc_rules_engine.services.cache import InMemoryCacheService
 from cdisc_rules_engine.services.data_services import LocalDataService
@@ -71,7 +72,7 @@ model_metadata = {
 }
 standard_metadata = {
     "_links": {"model": {"href": "/mdr/sdtm/1-5"}},
-    "domains": {
+    "dataset_names": {
         "HO",
         "CO",
         "SU",
@@ -177,6 +178,9 @@ def test_get_required_variables(operation_params: OperationParams, dataset_type)
     operation_params.domain = "AE"
     operation_params.standard = "sdtmig"
     operation_params.standard_version = "3-4"
+    operation_params.dataframe_metadata = SDTMDatasetMetadata(
+        first_record={"DOMAIN": "AE"}
+    )
 
     # save model metadata to cache
     cache = InMemoryCacheService.get_instance()
@@ -198,14 +202,7 @@ def test_get_required_variables(operation_params: OperationParams, dataset_type)
         library_metadata,
     )
 
-    def mock_cached_method(*args, **kwargs):
-        return operation_params.dataframe
-
-    with patch(
-        "cdisc_rules_engine.services.data_services.LocalDataService.get_raw_dataset_metadata",
-        side_effect=mock_cached_method,
-    ):
-        result: pd.DataFrame = operation.execute()
+    result: pd.DataFrame = operation.execute()
     variables: List[str] = sorted(["AETEST"])
     for result_array in result[operation_params.operation_id]:
         assert sorted(result_array) == variables

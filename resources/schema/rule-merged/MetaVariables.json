@@ -83,6 +83,10 @@
       "markdownDescription": "\nItemGroupDef.ItemDef.CommentOID exists\n"
     },
     {
+      "const": "define_variable_has_method",
+      "markdownDescription": "\nItemGroupDef.ItemRef.MethodOID exists\n"
+    },
+    {
       "const": "define_variable_has_no_data",
       "markdownDescription": "\nItemGroupDef.ItemRef.HasNoData\n"
     },
@@ -199,6 +203,14 @@
       "markdownDescription": "\ncore attribute of a variable from the CDISC Library\n"
     },
     {
+      "const": "library_variable_has_codelist",
+      "markdownDescription": "\nIndicates whether a variable has an associated codelist in the CDISC Library\n"
+    },
+    {
+      "const": "library_variable_ccode",
+      "markdownDescription": "\nccode attribute of a variable from the CDISC Library\n"
+    },
+    {
       "const": "library_variable_data_type",
       "markdownDescription": "\nsimpleDatatype attribute of a variable from the CDISC Library\n"
     },
@@ -241,6 +253,10 @@
     {
       "const": "variable_label",
       "markdownDescription": "\nVariable long label\n"
+    },
+    {
+      "const": "variable_max_size",
+      "markdownDescription": "\nMaximum length of actual data values in the variable\n"
     },
     {
       "const": "variable_name",

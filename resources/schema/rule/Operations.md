@@ -674,6 +674,7 @@ Output:
 ### get_column_order_from_library
 
 Fetches column order for a given domain from the CDISC library. The lists with column names are sorted in accordance to "ordinal" key of library metadata.
+Optionally Filters variables based on specified metadata criteria.
 
 Rule Type: Variable Metadata Check
 
@@ -686,6 +687,8 @@ Check:
 Operations:
   - id: $ig_variables
     operator: get_column_order_from_library
+    key_name: "role" # role, core, etc
+    key_value: "Exp" # Timing, Req, Exp, Perm, etc
 ```
 
 ### get_model_column_order
@@ -751,7 +754,7 @@ Output
 Filters variables from the dataset based on specified metadata criteria. Returns a list of variable names that exist in the dataset and match the filter criteria.
 
 ```yaml
-- operation: get_dataset_filtered_variables
+- operator: get_dataset_filtered_variables
   id: $timing_variables
   key_name: "role"
   key_value: "Timing"
@@ -776,7 +779,7 @@ Operations:
 
 ### minus
 
-Computes set difference: elements in `name` that are not in `subtract`. Uses [set difference](<https://en.wikipedia.org/wiki/Set_(mathematics)#Set_difference>) semantics (A ∖ B). Preserves order from the first list. Both `name` and `subtract` must reference other operation results (e.g., `$expected_variables`, `$dataset_variables`). When `subtract` is empty or missing, returns all elements from `name`. Can be computed and added to output variables to display missing elements in error results.
+Computes set difference: elements in `name` that are not in `subtract`. By default a standard [set difference](<https://en.wikipedia.org/wiki/Set_(mathematics)#Set_difference>) semantics (A ∖ B) is applied. Optional `order_insensitive` property allows to have the element order to be taken into consideration and only those `name` elements are removed which follow the same order as in `subtract` . Preserves order from the first list. Both `name` and `subtract` must reference other operation results (e.g., `$expected_variables`, `$dataset_variables`). When `subtract` is empty or missing, returns all elements from `name`. Can be computed and added to output variables to display missing elements in error results.
 
 ```yaml
 Operations:
@@ -788,6 +791,7 @@ Operations:
     name: $expected_variables
     operator: minus
     subtract: $dataset_variables
+    order_insensitive: false
 ```
 
 ### label_referenced_variable_metadata
@@ -834,6 +838,7 @@ Output
     "Record Qualifier"
   ],
   "$qlabel_referenced_variable_metadata_ordinal": [44, null, 38],
+  "$qlabel_referenced_variable_metadata_core": ["Req", "Req", "Req"],
   "$qlabel_referenced_variable_metadata_label": ["Toxicity", null, "Analysis Method"]
 }
 ```
@@ -882,13 +887,14 @@ Output
     "Record Qualifier"
   ],
   "$qnam_referenced_variable_metadata_ordinal": [44, null, 38],
+  "$qnam_referenced_variable_metadata_core": ["Req", "Req", "Req"],
   "$qnam_referenced_variable_metadata_label": ["Toxicity", null, "Analysis Method"]
 }
 ```
 
 ### get_library_class_domains
 
-Returns the list of domain for a given class from the CDISC Library Implementation Guide. This operation retrieves all domains that belong to a specified class (e.g., "TRIAL DESIGN", "FINDINGS", "EVENTS") based on the current standard and version. The operation uses the standard and version from the validation context as well as the optional `domain_class` parameter which is the name of the class to filter by (e.g., "TRIAL DESIGN", "FINDINGS", "EVENTS", "INTERVENTIONS). NOTE: Class names are case-sensitive and should match the Library metadata format. If no `domain_class` parameter is provided, the operation returns all domains across all classes in the Implementation Guide:
+Returns the list of domains for a given class from the CDISC Library Implementation Guide. This operation retrieves all domains that belong to a specified class (e.g., "TRIAL DESIGN", "FINDINGS", "EVENTS") based on the current standard and version. The operation uses the standard and version from the validation context as well as the optional `domain_class` parameter which is the name of the class to filter by (e.g., "TRIAL DESIGN", "FINDINGS", "EVENTS", "INTERVENTIONS). NOTE: Class names are case-sensitive and should match the Library metadata format. If no `domain_class` parameter is provided, the operation returns all domains across all classes in the Implementation Guide:
 
 ```yaml
 - operator: get_library_class_domains
@@ -1095,7 +1101,7 @@ Example: return the number of records grouped by USUBJID and timing variables, e
 Example: return the number of records where QNAM starts with "RACE" (matches RACE1, RACE2, RACE3, etc.) per USUBJID.
 
 ```yaml
-- operation: record_count
+- operator: record_count
   id: $race_records_in_dataset
   filter:
     QNAM: "RACE&"

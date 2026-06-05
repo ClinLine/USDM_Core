@@ -1,10 +1,9 @@
-from typing import List, Type, Iterable
+from typing import List, Type
 
 from cdisc_rules_engine.enums.report_types import ReportTypes
 from cdisc_rules_engine.interfaces import DataServiceInterface
 from cdisc_rules_engine.models.rule_validation_result import RuleValidationResult
 from cdisc_rules_engine.models.validation_args import Validation_args
-from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
 from cdisc_rules_engine.services.reporting.base_report_data import (
     BaseReportData,
 )
@@ -14,6 +13,7 @@ from cdisc_rules_engine.services.reporting.sdtm_report_data import SDTMReportDat
 from .base_report import BaseReport
 from .excel_report import ExcelReport
 from .json_report import JsonReport
+from .csv_report import CsvReport
 
 
 class ReportFactory:
@@ -31,15 +31,14 @@ class ReportFactory:
 
     def __init__(
         self,
-        datasets: Iterable[SDTMDatasetMetadata],
         results: List[RuleValidationResult],
         elapsed_time: float,
         args: Validation_args,
         data_service: DataServiceInterface,
         dictionary_versions,
     ):
-        self._datasets = datasets
-        self._dataset_paths = [dataset.full_path for dataset in datasets]
+        self._datasets = data_service.get_datasets()
+        self._dataset_paths = [dataset.full_path for dataset in self._datasets]
         self._results = results
         self._elapsed_time = elapsed_time
         self._args = args
@@ -48,6 +47,7 @@ class ReportFactory:
         self._output_type_service_map: dict[str, Type[BaseReport]] = {
             ReportTypes.XLSX.value: ExcelReport,
             ReportTypes.JSON.value: JsonReport,
+            ReportTypes.CSV.value: CsvReport,
         }
         self._standard_type_map: dict[str, Type[BaseReportData]] = {
             "usdm": USDMReportData,

@@ -99,6 +99,10 @@ class DaskDataset(PandasDataset):
 
         return self.length
 
+    @property
+    def empty(self):
+        return len(self) == 0
+
     def __deepcopy__(self, memo):
         pandas_df = self._data.compute()
         fresh_dask_df = dd.from_pandas(pandas_df, npartitions=DEFAULT_NUM_PARTITIONS)
@@ -113,8 +117,8 @@ class DaskDataset(PandasDataset):
         return cls(dataframe)
 
     @classmethod
-    def from_records(cls, data: List[dict], **kwargs):
-        data = pd.DataFrame.from_records(data, **kwargs)
+    def from_records(cls, data: List[dict]):
+        data = pd.DataFrame.from_records(data)
         dataframe = dd.from_pandas(data, npartitions=DEFAULT_NUM_PARTITIONS)
         return cls(dataframe)
 
@@ -400,10 +404,6 @@ class DaskDataset(PandasDataset):
 
         result = self._data.map_partitions(partition_isin)
         return result
-
-    def filter_by_value(self, column, values):
-        mask = self._data[column].isin(values)
-        return self.__class__(self._data[mask])
 
     def max(self, *args, **kwargs):
         result = self._data.max(*args, **kwargs)

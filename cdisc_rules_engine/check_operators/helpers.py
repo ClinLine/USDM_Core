@@ -56,7 +56,7 @@ class DatePrecision(IntEnum):
 
 
 def is_valid_date(date_string: str) -> bool:
-    if date_string is None:
+    if date_string is None or not isinstance(date_string, str):
         return False
     try:
         isoparse(date_string)
@@ -423,11 +423,10 @@ def flatten_list(data, items):
 
 
 vectorized_apply_regex = np.vectorize(apply_regex)
-vectorized_is_complete_date = np.vectorize(is_complete_date)
+vectorized_is_complete_date = np.vectorize(is_complete_date, otypes=[bool])
 vectorized_compare_dates = np.vectorize(compare_dates)
 vectorized_is_valid = np.vectorize(is_valid_date)
 vectorized_is_valid_duration = np.vectorize(is_valid_duration)
 vectorized_get_dict_key = np.vectorize(get_dict_key_val)
 vectorized_is_in = np.vectorize(is_in)
 vectorized_case_insensitive_is_in = np.vectorize(case_insensitive_is_in)
-vectorized_len = np.vectorize(len)

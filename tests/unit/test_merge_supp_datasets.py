@@ -7,6 +7,7 @@ from cdisc_rules_engine.services.data_services.local_data_service import (
 from cdisc_rules_engine.utilities.data_processor import DataProcessor
 import pandas as pd
 import pandas.testing as pdt
+from cdisc_rules_engine.exceptions.custom_exceptions import PreprocessingError
 
 
 @pytest.fixture
@@ -55,11 +56,32 @@ def test_process_supp():
     assert "QLABEL" not in processed_dataset.data.columns, "'QVAL' should be dropped."
 
 
-@patch.object(LocalDataService, "check_filepath", return_value=False)
+def test_data_processor_suppae_multiple_qnams():
+    suppae_data = {
+        "STUDYID": ["CDISCPILOT01", "CDISCPILOT01"],
+        "RDOMAIN": ["AE", "AE"],
+        "USUBJID": ["CDISC008", "CDISC008"],
+        "IDVAR": ["", ""],
+        "IDVARVAL": ["", ""],
+        "QNAM": ["AESPID", "AEREL2"],
+        "QLABEL": ["Sponsor ID", "Relationship 2"],
+        "QVAL": ["SP001", "POSSIBLE"],
+        "QORIG": ["CRF", "CRF"],
+        "QEVAL": ["", ""],
+    }
+    suppae_ds = PandasDataset(pd.DataFrame(suppae_data))
+    assert suppae_ds.data.shape[0] == 2
+
+    result = DataProcessor().process_supp(suppae_ds).data
+
+    assert result.shape[0] == 1
+    assert {"AESPID", "AEREL2"}.issubset(set(result.columns))
+    assert result.loc[0, "AESPID"] == "SP001"
+    assert result.loc[0, "AEREL2"] == "POSSIBLE"
+
+
 @patch.object(LocalDataService, "_async_get_datasets")
-def test_merge_pivot_supp_dataset(
-    mock_async_get_datasets, mock_check_filepath, data_service
-):
+def test_merge_pivot_supp_dataset(mock_async_get_datasets, data_service):
     # Setup example datasets
     parent_dataset = PandasDataset(
         pd.DataFrame(
@@ -125,7 +147,97 @@ def test_merge_pivot_supp_dataset(
     " length of the merged dataset should match the parent dataset."
 
 
-@patch.object(LocalDataService, "check_filepath", return_value=False)
+@patch.object(LocalDataService, "_async_get_datasets")
+@pytest.mark.parametrize(
+    "a_parent, id_var_val, expected_dataset",
+    [
+        (
+            [1.0, 2.0, 3.0],
+            ["1", "2", "3"],
+            pd.DataFrame(
+                {
+                    "STUDYID": [1, 2, 3],
+                    "USUBJID": [101, 102, 103],
+                    "APID": [201, 202, 203],
+                    "POOLID": [301, 302, 303],
+                    "SPDEVID": [401, 402, 403],
+                    "A": [1.0, 2.0, 3.0],
+                    "X": [10, pd.NA, pd.NA],
+                    "Y": [pd.NA, 20, pd.NA],
+                    "Z": [pd.NA, pd.NA, 30],
+                }
+            ),
+        ),
+        (
+            [1.1, 2.2, 3.3],
+            ["1.1", "2.2", "3"],
+            pd.DataFrame(
+                {
+                    "STUDYID": [1, 2, 3],
+                    "USUBJID": [101, 102, 103],
+                    "APID": [201, 202, 203],
+                    "POOLID": [301, 302, 303],
+                    "SPDEVID": [401, 402, 403],
+                    "A": [1.1, 2.2, 3.3],
+                    "X": [10, pd.NA, pd.NA],
+                    "Y": [pd.NA, 20, pd.NA],
+                    "Z": [pd.NA, pd.NA, pd.NA],
+                }
+            ),
+        ),
+    ],
+)
+def test_merge_supp_str_float(
+    mock_async_get_datasets,
+    data_service,
+    a_parent,
+    id_var_val,
+    expected_dataset,
+):
+    # Setup example datasets
+    parent_dataset = PandasDataset(
+        pd.DataFrame(
+            {
+                "STUDYID": [1, 2, 3],
+                "USUBJID": [101, 102, 103],
+                "APID": [201, 202, 203],
+                "POOLID": [301, 302, 303],
+                "SPDEVID": [401, 402, 403],
+                "A": a_parent,
+            }
+        )
+    )
+
+    supp_dataset = PandasDataset(
+        pd.DataFrame(
+            {
+                "STUDYID": [1, 2, 3],
+                "USUBJID": [101, 102, 103],
+                "APID": [201, 202, 203],
+                "POOLID": [301, 302, 303],
+                "SPDEVID": [401, 402, 403],
+                "IDVAR": ["A", "A", "A"],
+                "IDVARVAL": id_var_val,
+                "QNAM": ["X", "Y", "Z"],
+                "QVAL": [10, 20, 30],
+                "QLABEL": ["Label1", "Label2", "Label3"],
+            }
+        )
+    )
+
+    mock_async_get_datasets.return_value = [parent_dataset, supp_dataset]
+
+    merged_dataset = DataProcessor.merge_pivot_supp_dataset(
+        data_service.dataset_implementation, parent_dataset, supp_dataset
+    )
+    expected_dataset = PandasDataset(expected_dataset)
+    pdt.assert_frame_equal(
+        merged_dataset.data, expected_dataset.data, check_dtype=False
+    )
+    assert len(merged_dataset.data) == len(parent_dataset.data), "The"
+    " length of the merged dataset should match the parent dataset."
+
+
 @patch.object(LocalDataService, "_async_get_datasets")
 def test_merge_supp_dataset_multi_idvar(mock_async_get_datasets, data_service):
     parent_dataset = PandasDataset(
@@ -207,7 +319,6 @@ def test_merge_supp_dataset_multi_idvar(mock_async_get_datasets, data_service):
     ), "Merged dataset should have same number of rows as parent"
 
 
-@patch.object(LocalDataService, "check_filepath", return_value=False)
 @patch.object(LocalDataService, "_async_get_datasets")
 def test_merge_supp_dataset_multi_idvar_aggregation(
     mock_async_get_datasets, data_service
@@ -256,9 +367,8 @@ def test_merge_supp_dataset_multi_idvar_aggregation(
     assert row["ECSITE"] == "Site A", "ECSITE from ECENDY=7 should be merged"
 
 
-@patch.object(LocalDataService, "check_filepath", return_value=False)
 @patch.object(LocalDataService, "_async_get_datasets")
-def test_merge_supp_dataset_multi_idvar_same_qnam_validation_error(
+def test_merge_supp_dataset_same_qnam_validation_error(
     mock_async_get_datasets, data_service
 ):
     parent_dataset = PandasDataset(
@@ -292,7 +402,7 @@ def test_merge_supp_dataset_multi_idvar_same_qnam_validation_error(
 
     mock_async_get_datasets.return_value = [parent_dataset, supp_dataset]
 
-    with pytest.raises(ValueError, match="Multiple records with the same QNAM"):
+    with pytest.raises(PreprocessingError, match="Multiple records with the same QNAM"):
         DataProcessor.merge_pivot_supp_dataset(
             data_service.dataset_implementation, parent_dataset, supp_dataset
         )

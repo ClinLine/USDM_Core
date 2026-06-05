@@ -86,6 +86,10 @@ ItemGroupDef.ItemDef.CodeListRef exists
 
 ItemGroupDef.ItemDef.CommentOID exists
 
+## define_variable_has_method
+
+ItemGroupDef.ItemRef.MethodOID exists
+
 ## define_variable_has_no_data
 
 ItemGroupDef.ItemRef.HasNoData
@@ -253,6 +257,10 @@ True/False value indicating whether a variable is completely empty
 ## variable_label
 
 Variable long label
+
+## variable_max_size
+
+Maximum length of actual data values in the variable
 
 ## variable_name
 

@@ -50,10 +50,9 @@ class SDTMReportData(BaseReportData):
         )
         define_xml_path = args.define_xml_path
         dictionary_versions = self._dictionary_versions or {}
-        if define_xml_path:
-            define_version = self.get_define_version([define_xml_path])
-        else:
-            define_version: str = self._args.define_version
+        define_version = (
+            self.get_define_version([define_xml_path]) if define_xml_path else None
+        )
         controlled_terminology = self._args.controlled_terminology_package
         if not controlled_terminology and define_version:
             if define_xml_path and define_version:
@@ -225,11 +224,14 @@ class SDTMReportData(BaseReportData):
                     result.get("errors")
                     and result.get("executionStatus") != ExecutionStatus.SKIPPED.value
                 ):
+                    issues = result.get("original_errors_len") or len(
+                        result.get("errors", [])
+                    )
                     summary_item = {
                         "dataset": dataset,
                         "core_id": validation_result.id,
                         "message": result.get("message"),
-                        "issues": len(result.get("errors")),
+                        "issues": issues,
                     }
                     summary_data.append(summary_item)
 
@@ -344,6 +346,18 @@ class SDTMReportData(BaseReportData):
                 + self._error_details(validation_result, result)
             )
         return errors
+
+    def get_csv_rows(self) -> tuple[list[str], list[list[str]]]:
+        header = ["Dataset", "Record", "Variable", "Value"]
+        rows = []
+        for issue in self.data_sheets.get("Issue Details", []):
+            dataset = (issue.get("dataset") or "").removesuffix(".csv")
+            record = str(issue.get("row", ""))
+            variables = issue.get("variables") or []
+            values = issue.get("values") or []
+            for variable, value in zip(variables, values):
+                rows.append([dataset, record, variable, str(value)])
+        return header, rows
 
     def get_rules_report_data(self) -> list[dict]:
         """

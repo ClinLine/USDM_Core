@@ -223,6 +223,15 @@ def test_extract_variable_metadata(filename):
             "define_variable_is_collected": False,
             "define_variable_order_number": 11,
             "define_variable_has_comment": True,
+            "define_variable_has_method": False,
+        }
+        expected_exdose_metadata = {
+            "define_variable_name": "EXDOSE",
+            "define_variable_data_type": "integer",
+            "define_variable_origin_type": "Derived",
+            "define_variable_is_collected": False,
+            "define_variable_has_comment": False,
+            "define_variable_has_method": True,
         }
         for index, variable in enumerate(variable_metadata):
             assert variable["define_variable_name"] in expected_variables
@@ -232,6 +241,12 @@ def test_extract_variable_metadata(filename):
             ):
                 for key in expected_exroute_metadata.keys():
                     assert variable[key] == expected_exroute_metadata[key]
+            if (
+                variable["define_variable_name"]
+                == expected_exdose_metadata["define_variable_name"]
+            ):
+                for key in expected_exdose_metadata.keys():
+                    assert variable[key] == expected_exdose_metadata[key]
 
             assert variable["define_variable_order_number"] == index + 1
 
@@ -507,6 +522,55 @@ def test_extract_dataset_metadata_without_ordernumber(filename):
             dataset_metadata["define_dataset_variable_order"]
             == dataset_metadata["define_dataset_variables"]
         )
+
+
+class TestNormalizationInConstructors:
+
+    def test_from_file_contents_original_version_preserved(self):
+        contents = resources_path.joinpath("test_defineV21-SDTM.xml").read_bytes()
+        reader = DefineXMLReaderFactory.from_file_contents(contents)
+        assert reader._original_define_version == "2.1.0"
+
+    def test_from_file_contents_original_version_none_for_v20(self):
+        contents = resources_path.joinpath("test_defineV20-SDTM.xml").read_bytes()
+        reader = DefineXMLReaderFactory.from_file_contents(contents)
+        assert reader._original_define_version is None
+
+    def test_from_file_contents_patched_version_normalized(self):
+        original = resources_path.joinpath("test_defineV21-SDTM.xml").read_text(
+            encoding="utf-8"
+        )
+        patched = original.replace(
+            'def:DefineVersion="2.1.0"', 'def:DefineVersion="2.1.7"'
+        )
+        reader = DefineXMLReaderFactory.from_file_contents(patched)
+        assert isinstance(reader, DefineXMLReader21)
+        assert reader._original_define_version == "2.1.7"
+
+    def test_from_filename_original_version_preserved(self):
+        reader = DefineXMLReaderFactory.from_filename(
+            resources_path.joinpath("test_defineV21-SDTM.xml")
+        )
+        assert reader._original_define_version == "2.1.0"
+
+    def test_from_filename_original_version_none_for_v20(self):
+        reader = DefineXMLReaderFactory.from_filename(
+            resources_path.joinpath("test_defineV20-SDTM.xml")
+        )
+        assert reader._original_define_version is None
+
+    def test_from_filename_patched_version_normalized(self, tmp_path):
+        original = resources_path.joinpath("test_defineV21-SDTM.xml").read_text(
+            encoding="utf-8"
+        )
+        patched = original.replace(
+            'def:DefineVersion="2.1.0"', 'def:DefineVersion="2.1.5"'
+        )
+        tmp_file = tmp_path / "define_patched.xml"
+        tmp_file.write_text(patched, encoding="utf-8")
+        reader = DefineXMLReaderFactory.from_filename(str(tmp_file))
+        assert isinstance(reader, DefineXMLReader21)
+        assert reader._original_define_version == "2.1.5"
 
 
 class TestGetExtensibleCodelistMappings:

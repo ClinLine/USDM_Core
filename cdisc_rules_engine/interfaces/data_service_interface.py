@@ -52,18 +52,9 @@ class DataServiceInterface(ABC):
         """
 
     @abstractmethod
-    def get_variables_metadata(self, dataset_name: str, **params) -> DatasetInterface:
+    def get_variables_metadata(self, dataset_name: str) -> DatasetInterface:
         """
         Gets variables metadata of a dataset.
-        """
-
-    @abstractmethod
-    def get_dataset_by_type(
-        self, dataset_name: str, dataset_type: str, **params
-    ) -> DatasetInterface:
-        """
-        Generic function to return dataset based on the type.
-        dataset_type param can be: contents, metadata, variables_metadata.
         """
 
     @abstractmethod
@@ -71,7 +62,6 @@ class DataServiceInterface(ABC):
         self,
         func_to_call: Callable,
         datasets_metadata: Iterable[DatasetMetadata],
-        **kwargs,
     ):
         """
         Accepts a list of split dataset filenames,
@@ -107,8 +97,6 @@ class DataServiceInterface(ABC):
     def get_dataset_class(
         self,
         dataset: DatasetInterface,
-        file_path: str,
-        datasets: Iterable[SDTMDatasetMetadata],
         dataset_metadata: SDTMDatasetMetadata,
     ) -> Optional[str]:
         """
@@ -118,8 +106,6 @@ class DataServiceInterface(ABC):
     @abstractmethod
     def get_data_structure(
         self,
-        file_path: str,
-        datasets: Iterable[SDTMDatasetMetadata],
         dataset_metadata: SDTMDatasetMetadata,
     ) -> Optional[str]:
         """
@@ -130,6 +116,16 @@ class DataServiceInterface(ABC):
     def to_parquet(self, file_path: str) -> str:
         """
         Converts a given file_path to parquet. Returns path to new file
+        """
+
+    @abstractmethod
+    def handle_custom_domains(
+        self,
+        dataset: DatasetInterface,
+        dataset_metadata: SDTMDatasetMetadata,
+    ) -> str | None:
+        """
+        Handles custom domains by returning the appropriate class name based on the dataset contents.
         """
 
     @staticmethod

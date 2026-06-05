@@ -17,7 +17,11 @@ from cdisc_rules_engine.check_operators.helpers import (
 )
 from cdisc_rules_engine.enums.dataset_title_case import DatasetTitleCase
 from cdisc_rules_engine.constants import NULL_FLAVORS
-from cdisc_rules_engine.utilities.utils import dates_overlap, parse_date
+from cdisc_rules_engine.utilities.utils import (
+    dates_overlap,
+    parse_date,
+    custom_str_conversion,
+)
 import numpy as np
 import dask.dataframe as dd
 import pandas as pd
@@ -93,24 +97,6 @@ class DataframeType(BaseType):
         """
         if pd.notna(x):
             if isinstance(x, int):
-                return str(x).strip()
-            elif isinstance(x, float):
-                return f"{x:.0f}" if x.is_integer() else str(x).strip()
-        return x
-
-    def _custom_str_conversion(self, x):
-        """used to normalize numeric representations i.e. treat 200.00 as 200 for comparisons"""
-        if pd.notna(x):
-            if isinstance(x, str):
-                try:
-                    float_val = float(x)
-                    if float_val.is_integer():
-                        return str(int(float_val)).strip()
-                    else:
-                        return str(float_val).strip()
-                except (ValueError, TypeError):
-                    return x.strip()
-            elif isinstance(x, int):
                 return str(x).strip()
             elif isinstance(x, float):
                 return f"{x:.0f}" if x.is_integer() else str(x).strip()
@@ -239,8 +225,8 @@ class DataframeType(BaseType):
         if round_values:
             target_val, comparison_val = apply_rounding(target_val, comparison_val)
         if type_insensitive:
-            target_val = self._custom_str_conversion(target_val)
-            comparison_val = self._custom_str_conversion(comparison_val)
+            target_val = custom_str_conversion(target_val)
+            comparison_val = custom_str_conversion(comparison_val)
         if case_insensitive:
             target_val = target_val.lower() if target_val else None
             comparison_val = comparison_val.lower() if comparison_val else None
@@ -286,8 +272,8 @@ class DataframeType(BaseType):
         if round_values:
             target_val, comparison_val = apply_rounding(target_val, comparison_val)
         if type_insensitive:
-            target_val = self._custom_str_conversion(target_val)
-            comparison_val = self._custom_str_conversion(comparison_val)
+            target_val = custom_str_conversion(target_val)
+            comparison_val = custom_str_conversion(comparison_val)
         if case_insensitive:
             target_val = target_val.lower() if target_val else None
             comparison_val = comparison_val.lower() if comparison_val else None
@@ -1152,6 +1138,10 @@ class DataframeType(BaseType):
     def is_inconsistent_across_dataset(self, other_value):
         target = other_value.get("target")
         comparator = other_value.get("comparator")
+        regex = other_value.get("regex")
+        if isinstance(regex, list) and regex:
+            regex = regex[0]
+
         grouping_cols = []
         if isinstance(comparator, str):
             if comparator in self.value.columns:
@@ -1162,6 +1152,22 @@ class DataframeType(BaseType):
                     grouping_cols.append(col)
         df_check = self.value[grouping_cols + [target]].copy()
         df_check = df_check.fillna("_NaN_")
+        if regex:
+            try:
+                pattern = re.compile(regex)
+            except re.error:
+                raise ValueError(
+                    f"Invalid regex: {regex}. Remove parameter or fix the regex."
+                )
+            if pattern.groups == 0:
+                regex = f"({regex})"
+            extracted = df_check[target].astype(str).str.extract(regex, expand=True)[0]
+            df_check[target] = extracted.fillna(df_check[target])
+        results = self._check_inconsistency(df_check, grouping_cols, target)
+        return results
+
+    @staticmethod
+    def _check_inconsistency(df_check, grouping_cols: list[Any], target):
         results = pd.Series(False, index=df_check.index)
         for name, group in df_check.groupby(grouping_cols, dropna=False):
             if group[target].nunique() > 1:
@@ -1658,12 +1664,12 @@ class DataframeType(BaseType):
 
         return is_valid
 
-    def check_target_ascending_in_sorted_group(
+    def check_target_ascending_in_sorted_group_with_regex(
         self, group, target, comparator, ascending, na_pos
     ):
         """
         Check if target values are in ascending order within a group
-        already sorted by comparator.
+        already sorted by comparator. Supports regex extraction.
         """
         is_valid = pd.Series(True, index=group.index)
         is_numeric_comparator = pd.api.types.is_numeric_dtype(group[comparator])
@@ -1792,12 +1798,45 @@ class DataframeType(BaseType):
                 grouped_result = pd.Series(result_list, index=index_list)
         return grouped_result.reindex(sorted_df.index, fill_value=True)
 
+    def _extract_regex_group(self, series: pd.Series, regex_pattern: str) -> pd.Series:
+        """
+        Extract the first capturing group from a regex pattern and convert to numeric if possible.
+        Handles zero-padded numbers by converting to numeric.
+
+        Args:
+            series: Pandas series with string values
+            regex_pattern: Regex pattern with capturing group(s)
+
+        Returns:
+            Series with extracted and converted values
+        """
+
+        def extract_and_convert(value):
+            if pd.isna(value) or value == "":
+                return np.nan
+
+            # YAML escapes backslashes, so we receive ".*\\d+$" which Python interprets as raw \
+            # We need to convert this to the actual regex pattern by replacing \\ with \
+            # However, since strings from YAML come already unescaped, we just use as-is
+            match = re.search(regex_pattern, str(value))
+            if match and match.groups():
+                extracted = match.group(1)  # First capturing group
+                # Try to convert to numeric to handle both padded and non-padded numbers
+                try:
+                    return pd.to_numeric(extracted)
+                except (ValueError, TypeError):
+                    return extracted
+            return np.nan
+
+        return series.apply(extract_and_convert)
+
     @log_operator_execution
     @type_operator(FIELD_DATAFRAME)
     def target_is_sorted_by(self, other_value: dict):
         target = other_value.get("target")
         within_columns = self._normalize_grouping_columns(other_value.get("within"))
         columns = other_value["comparator"]
+        target_regex = other_value.get("regex")  # parameter for regex extraction
 
         result = pd.Series([True] * len(self.value), index=self.value.index)
 
@@ -1810,16 +1849,32 @@ class DataframeType(BaseType):
                 dict.fromkeys([target, comparator, *within_columns])
             )
 
-            sorted_df = self.value[selected_columns].sort_values(
-                by=[*within_columns, target],
-                ascending=[True] * (len(within_columns) + 1),
-            )
+            # If regex is provided, extract and convert target values
+            if target_regex:
+                working_df = self.value[selected_columns].copy()
+                # Create a temporary column with extracted regex values
+                working_df[f"{target}_extracted"] = self._extract_regex_group(
+                    working_df[target], target_regex
+                )
+                target_for_sorting = f"{target}_extracted"
+                # Sort by within columns AND extracted target
+                sorted_df = working_df.sort_values(
+                    by=[*within_columns, target_for_sorting],
+                    ascending=[True] * (len(within_columns) + 1),
+                )
+            else:
+                working_df = self.value[selected_columns]
+                target_for_sorting = target
+                sorted_df = working_df.sort_values(
+                    by=[*within_columns, target],
+                    ascending=[True] * (len(within_columns) + 1),
+                )
 
             grouped_df = sorted_df.groupby(within_columns, sort=False)
 
             target_check = grouped_df.apply(
-                lambda x: self.check_target_ascending_in_sorted_group(
-                    x, target, comparator, ascending, na_pos
+                lambda x: self.check_target_ascending_in_sorted_group_with_regex(
+                    x, target_for_sorting, comparator, ascending, na_pos
                 )
             )
             target_check = self._process_grouped_result(
@@ -1827,20 +1882,22 @@ class DataframeType(BaseType):
                 grouped_df,
                 within_columns,
                 sorted_df,
-                lambda group: self.check_target_ascending_in_sorted_group(
-                    group, target, comparator, ascending, na_pos
+                lambda group: self.check_target_ascending_in_sorted_group_with_regex(
+                    group, target_for_sorting, comparator, ascending, na_pos
                 ),
             )
 
             date_overlap_check = grouped_df.apply(
-                lambda x: self.check_date_overlaps(x, target, comparator)
+                lambda x: self.check_date_overlaps(x, target_for_sorting, comparator)
             )
             date_overlap_check = self._process_grouped_result(
                 date_overlap_check,
                 grouped_df,
                 within_columns,
                 sorted_df,
-                lambda group: self.check_date_overlaps(group, target, comparator),
+                lambda group: self.check_date_overlaps(
+                    group, target_for_sorting, comparator
+                ),
             )
 
             combined_check = target_check & date_overlap_check

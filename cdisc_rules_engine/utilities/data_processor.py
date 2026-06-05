@@ -1,5 +1,5 @@
 from __future__ import annotations
-from typing import List, Optional, TYPE_CHECKING
+from typing import List, TYPE_CHECKING
 
 from cdisc_rules_engine.models.dataset import PandasDataset, DaskDataset
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
@@ -17,8 +17,10 @@ from cdisc_rules_engine.services.data_services import (
     DataServiceFactory,
     DummyDataService,
 )
+from cdisc_rules_engine.exceptions.custom_exceptions import PreprocessingError
 from cdisc_rules_engine.utilities.utils import (
-    search_in_list_of_dicts,
+    search_in_list,
+    custom_str_conversion,
 )
 from cdisc_rules_engine.utilities.sdtm_utilities import add_variable_wildcards
 
@@ -104,13 +106,15 @@ class DataProcessor:
         model_metadata = (
             dataset_preprocessor._data_service.library_metadata.model_metadata
         )
-        file_info: SDTMDatasetMetadata = search_in_list_of_dicts(
+        dataset_metadata: SDTMDatasetMetadata = search_in_list(
             datasets, lambda item: item.domain == relrec_row["RDOMAIN_RIGHT"]
         )
-        if not file_info:
+        if not dataset_metadata:
             return DatasetInterface()
-        right_dataset: DatasetInterface = dataset_preprocessor._download_dataset(
-            file_info.filename
+        right_dataset: DatasetInterface = (
+            dataset_preprocessor._data_service.get_dataset(
+                dataset_name=dataset_metadata.name
+            )
         )
         variables_with_wildcards = {
             source: f"RELREC.{target}"
@@ -142,18 +146,24 @@ class DataProcessor:
                 variables_with_wildcards["USUBJID"],
             ]
         else:
-            left_on = ["STUDYID", "USUBJID", relrec_row["IDVAR_LEFT"]]
+            left_on = ["STUDYID", "USUBJID", "RELREC.IDVAR"]
             right_on = [
                 variables_with_wildcards["STUDYID"],
                 variables_with_wildcards["USUBJID"],
-                variables_with_wildcards[relrec_row["IDVAR_RIGHT"]],
+                "RELREC.IDVAR",
             ]
+            left_subset["RELREC.IDVAR"] = left_subset[relrec_row["IDVAR_LEFT"]].astype(
+                str
+            )
+            right_subset["RELREC.IDVAR"] = right_subset[
+                relrec_row["IDVAR_RIGHT"]
+            ].astype(str)
         right_subset = right_subset.rename(columns=variables_with_wildcards)
         result = left_subset.merge(
             other=right_subset.data,
             left_on=left_on,
             right_on=right_on,
-        )
+        ).drop(["RELREC.IDVAR"], axis=1, errors="ignore")
         return result
 
     @staticmethod
@@ -181,15 +191,17 @@ class DataProcessor:
         relrec_for_domain = DataProcessor.filter_relrec_for_domain(
             left_dataset_domain_name, relrec_dataset
         )
-
-        # TODO: FIX
         objs = [
             DataProcessor.merge_on_relrec_record(
                 relrec_row, left_dataset, datasets, dataset_preprocessor, wildcard
             )
             for _, relrec_row in relrec_for_domain.iterrows()
         ]
-        result = objs[0].concat(objs[1:], ignore_index=True)
+        result = (
+            objs[0].concat(objs[1:], ignore_index=True)
+            if objs
+            else left_dataset.__class__()
+        )
         return result
 
     @staticmethod
@@ -204,6 +216,8 @@ class DataProcessor:
         if len(unique_idvar_values) == 1:
             right_dataset = DataProcessor.process_supp(right_dataset)
             dynamic_key = right_dataset["IDVAR"].iloc[0]
+            temp_key = f"{dynamic_key}__norm"
+
             is_blank: bool = pd.isna(dynamic_key) or str(dynamic_key).strip() == ""
             # Determine the common keys present in both datasets
             common_keys = [
@@ -212,11 +226,19 @@ class DataProcessor:
                 if key in left_dataset.columns and key in right_dataset.columns
             ]
             if not is_blank:
+                left_dataset[temp_key] = left_dataset[dynamic_key]
+
                 common_keys.append(dynamic_key)
                 current_supp = right_dataset.rename(columns={"IDVARVAL": dynamic_key})
                 current_supp = current_supp.drop(columns=["IDVAR"])
-                left_dataset[dynamic_key] = left_dataset[dynamic_key].astype(str)
-                current_supp[dynamic_key] = current_supp[dynamic_key].astype(str)
+
+                if pd.api.types.is_numeric_dtype(left_dataset[dynamic_key]):
+                    left_dataset[dynamic_key] = left_dataset[dynamic_key].apply(
+                        custom_str_conversion
+                    )
+                    current_supp[dynamic_key] = current_supp[dynamic_key].apply(
+                        custom_str_conversion
+                    )
             else:
                 columns_to_drop = [
                     col for col in ["IDVAR", "IDVARVAL"] if col in right_dataset.columns
@@ -233,7 +255,7 @@ class DataProcessor:
                 DataProcessor._validate_qnam_dask(left_dataset, qnam_list, common_keys)
             else:
                 left_dataset = PandasDataset(
-                    pd.merge(
+                    pd.merge(  # noqa
                         left_dataset.data,
                         current_supp.data,
                         how="left",
@@ -242,6 +264,9 @@ class DataProcessor:
                     )
                 )
                 DataProcessor._validate_qnam(left_dataset.data, qnam_list, common_keys)
+            if not is_blank:
+                left_dataset[dynamic_key] = left_dataset[temp_key]
+                left_dataset = left_dataset.drop(columns=[temp_key])
         else:
             if dataset_implementation == DaskDataset:
                 left_dataset = PandasDataset(left_dataset.data.compute())
@@ -254,6 +279,7 @@ class DataProcessor:
                 left_dataset = DataProcessor._merge_supp_with_multiple_idvars(
                     left_dataset, right_dataset, static_keys, qnam_list
                 )
+
         return left_dataset
 
     @staticmethod
@@ -331,7 +357,7 @@ class DataProcessor:
             validation_keys.append(idvar_for_qnam)
             grouped = qnam_check.groupby(validation_keys).size()
             if (grouped > 1).any():
-                raise ValueError(
+                raise PreprocessingError(
                     f"Multiple records with the same QNAM '{qnam}' match a single parent record"
                 )
         return result_dataset
@@ -351,14 +377,20 @@ class DataProcessor:
         columns_to_drop = [
             col for col in ["QNAM", "QVAL", "QLABEL"] if col in supp_dataset.columns
         ]
-        if "RDOMAIN" in supp_dataset.columns and supp_dataset["RDOMAIN"][0] == "DM":
-            excluded_columns = list(supp_dataset["QNAM"].unique()) + columns_to_drop
-            group_cols = [c for c in supp_dataset.columns if c not in excluded_columns]
-            supp_dataset = PandasDataset(
-                supp_dataset.data.groupby(group_cols, dropna=False, as_index=False).agg(
-                    lambda x: (x.dropna().iloc[0] if not x.dropna().empty else pd.NA)
-                )
+        excluded_columns = list(supp_dataset["QNAM"].unique()) + columns_to_drop
+        group_cols = [c for c in supp_dataset.columns if c not in excluded_columns]
+        grouped = supp_dataset.data.groupby(
+            group_cols + ["QNAM"], dropna=False, as_index=False
+        ).size()
+        if (grouped["size"] > 1).any():
+            raise PreprocessingError(
+                "Multiple records with the same QNAM match a single parent record"
             )
+        supp_dataset = PandasDataset(
+            supp_dataset.data.groupby(group_cols, dropna=False, as_index=False).agg(
+                lambda x: (x.dropna().iloc[0] if not x.dropna().empty else pd.NA)
+            )
+        )
         if columns_to_drop:
             supp_dataset = supp_dataset.drop(labels=columns_to_drop, axis=1)
         return supp_dataset
@@ -377,7 +409,7 @@ class DataProcessor:
                 continue
             grouped = qnam_check.groupby(common_keys).size()
             if (grouped > 1).any():
-                raise ValueError(
+                raise PreprocessingError(
                     f"Multiple records with the same QNAM '{qnam}' match a single parent record"
                 )
 
@@ -397,7 +429,7 @@ class DataProcessor:
             problem_groups = grouped_counts[grouped_counts > 1]
             problem_groups_computed = problem_groups.compute()
             if len(problem_groups_computed) > 0:
-                raise ValueError(
+                raise PreprocessingError(
                     f"Multiple records with the same QNAM '{qnam}' match a single parent record. "
                 )
 
@@ -436,46 +468,6 @@ class DataProcessor:
                     ),
                 ] = None
         return result
-
-    @staticmethod
-    def filter_dataset_columns_by_metadata_and_rule(
-        columns: List[str],
-        define_metadata: List[dict],
-        library_metadata: dict,
-        rule: dict,
-    ) -> List[str]:
-        """
-        Leaves only those variables where:
-            variable origin type is the same as in rule and
-            variable core status is the same as in rule
-        """
-        targets: List[str] = []
-        for column in columns:
-            if DataProcessor.column_metadata_equal_to_define_and_library(
-                column, define_metadata, library_metadata, rule
-            ):
-                targets.append(column)
-        return targets
-
-    @staticmethod
-    def column_metadata_equal_to_define_and_library(
-        column: str,
-        define_metadata: List[dict],
-        library_metadata: dict,
-        rule: dict,
-    ) -> bool:
-        define_variable_metadata: Optional[dict] = search_in_list_of_dicts(
-            define_metadata, lambda item: item.get("define_variable_name") == column
-        )
-        if not define_variable_metadata:
-            return False
-        equal_origin_type: bool = define_variable_metadata[
-            "define_variable_origin_type"
-        ] == rule.get("variable_origin_type")
-        equal_core_status: bool = library_metadata.get(column, {}).get(
-            "core"
-        ) == rule.get("variable_core_status")
-        return equal_core_status and equal_origin_type
 
     @staticmethod
     def is_dummy_data(data_service: DataServiceInterface) -> bool:

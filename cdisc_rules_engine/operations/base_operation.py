@@ -1,8 +1,7 @@
+from os.path import dirname, exists, join
+
+from cdisc_rules_engine.constants.define_xml_constants import DEFINE_XML_FILE_NAME
 from cdisc_rules_engine.models.operation_params import OperationParams
-from cdisc_rules_engine.constants.permissibility import (
-    PERMISSIBLE,
-    PERMISSIBILITY_KEY,
-)
 from abc import abstractmethod
 from typing import List
 import pandas as pd
@@ -30,7 +29,6 @@ from cdisc_rules_engine.exceptions.custom_exceptions import (
     VariableMetadataNotFoundError,
     DomainNotFoundInDefineXMLError,
     InvalidDatasetFormat,
-    NumberOfAttemptsExceeded,
     InvalidDictionaryVariable,
     UnsupportedDictionaryType,
     FailedSchemaValidation,
@@ -43,7 +41,7 @@ class BaseOperation:
     def __init__(
         self,
         params: OperationParams,
-        original_dataset: DatasetInterface,
+        evaluation_dataset: DatasetInterface,
         cache_service: CacheServiceInterface,
         data_service: DataServiceInterface,
         library_metadata: LibraryMetadataContainer = LibraryMetadataContainer(),
@@ -51,7 +49,7 @@ class BaseOperation:
         self.params = params
         self.cache = cache_service
         self.data_service = data_service
-        self.evaluation_dataset = original_dataset
+        self.evaluation_dataset = evaluation_dataset
         self.library_metadata = library_metadata
 
     @abstractmethod
@@ -80,7 +78,6 @@ class BaseOperation:
             VariableMetadataNotFoundError,
             DomainNotFoundInDefineXMLError,
             InvalidDatasetFormat,
-            NumberOfAttemptsExceeded,
             InvalidDictionaryVariable,
             UnsupportedDictionaryType,
             FailedSchemaValidation,
@@ -140,8 +137,10 @@ class BaseOperation:
             result = self._rename_grouping_columns(result)
         grouping_columns = self._get_grouping_columns()
         target_columns = grouping_columns + [self.params.operation_id]
-        target_columns = self._resolve_variable_name(target_columns, self.params.domain)
-        grouping_columns = self._resolve_variable_name(
+        target_columns = self._replace_variable_wildcard(
+            target_columns, self.params.domain
+        )
+        grouping_columns = self._replace_variable_wildcard(
             grouping_columns, self.params.domain
         )
         result = result.reset_index()
@@ -225,41 +224,27 @@ class BaseOperation:
     def _get_variables_metadata_from_standard(self) -> List[dict]:
         # TODO: Update to handle other standard types: adam, cdash, etc.
 
-        # self.params.domain is unsplit_name
-        domain_for_library = self.params.domain
         return sdtm_utilities.get_variables_metadata_from_standard(
-            domain=domain_for_library,
             library_metadata=self.library_metadata,
             data_service=self.data_service,
-            dataset=self.evaluation_dataset,
-            dataset_metadata=self.data_service.get_raw_dataset_metadata(
-                dataset_name=self.params.dataset_path, datasets=self.params.datasets
-            ),
-            datasets=self.params.datasets,
-            dataset_path=self.params.dataset_path,
+            dataset_metadata=self.params.dataframe_metadata,
         )
 
-    def get_allowed_variable_permissibility(self, variable_metadata: dict):
-        """
-        Returns the permissibility value of a variable allowed in the current domain
-        """
-        if PERMISSIBILITY_KEY in variable_metadata:
-            return variable_metadata[PERMISSIBILITY_KEY]
-        return PERMISSIBLE
-
-    def _get_variable_names_list(self, domain, dataframe):
+    def _get_variable_names_list(self, dataset_metadata, dataframe):
         # get variables metadata from the standard model
         variables_metadata: List[dict] = (
-            self._get_variables_metadata_from_standard_model(domain, dataframe)
+            self._get_variables_metadata_from_standard_model(
+                dataset_metadata, dataframe
+            )
         )
         # create a list of variable names in accordance to the "ordinal" key
         variable_names_list = self._replace_variable_wildcards(
-            variables_metadata, domain
+            variables_metadata, dataset_metadata.wildcard_replacement
         )
         return list(OrderedDict.fromkeys(variable_names_list))
 
     def _get_variables_metadata_from_standard_model(
-        self, domain, dataframe
+        self, dataset_metadata, dataframe
     ) -> List[dict]:
         """
         Gets variables metadata for the given class and domain from cache.
@@ -287,23 +272,21 @@ class BaseOperation:
         # TODO: Update to handle multiple standard types.
 
         return sdtm_utilities.get_variables_metadata_from_standard_model(
-            domain=domain,
             dataframe=dataframe,
-            datasets=self.params.datasets,
-            dataset_path=self.params.dataset_path,
             data_service=self.data_service,
             library_metadata=self.library_metadata,
-            dataset_metadata=self.data_service.get_raw_dataset_metadata(
-                dataset_name=self.params.dataset_path, datasets=self.params.datasets
-            ),
+            dataset_metadata=dataset_metadata,
         )
 
     @staticmethod
     def _replace_variable_wildcards(variables_metadata, domain):
-        return [var["name"].replace("--", domain) for var in variables_metadata]
+        return [
+            BaseOperation._replace_variable_wildcard(var["name"], domain)
+            for var in variables_metadata
+        ]
 
     @staticmethod
-    def _resolve_variable_name(variable_name, domain: str):
+    def _replace_variable_wildcard(variable_name, domain: str):
         if isinstance(variable_name, list):
             return [
                 var.replace("--", domain) if "--" in var else var
@@ -314,3 +297,22 @@ class BaseOperation:
             if "--" in variable_name
             else variable_name
         )
+
+    def _get_define_contents(self):
+        define_path = (
+            self.params.define_xml_path
+            if self.params.define_xml_path
+            else join(
+                dirname(
+                    self.params.evaluation_dataset_metadata.original_path
+                    or self.params.evaluation_dataset_metadata.full_path
+                ),
+                DEFINE_XML_FILE_NAME,
+            )
+        )
+        if not exists(define_path):
+            raise FileNotFoundError(f"Define XML file {define_path} not found")
+        define_contents = self.data_service.get_define_xml_contents(
+            dataset_name=define_path
+        )
+        return define_contents

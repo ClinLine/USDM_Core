@@ -1,33 +1,31 @@
+from cdisc_rules_engine.exceptions.custom_exceptions import DomainNotFoundError
 from cdisc_rules_engine.operations.base_operation import BaseOperation
 from datetime import datetime
 import numpy as np
-from cdisc_rules_engine.services import logger
-from cdisc_rules_engine.utilities.utils import tag_source
+from cdisc_rules_engine.utilities.sdtm_utilities import tag_source
 
 
 class DayDataValidator(BaseOperation):
     def _execute_operation(self):
-        logger.info(
-            f"trying to find '{self.params.target}' in the {self.evaluation_dataset['DOMAIN'].iloc[0]}."
-        )
         dtc_value = self.evaluation_dataset[self.params.target].map(
             self.parse_timestamp
         )
         # Always get RFSTDTC column from DM dataset.
         dm_datasets = [
-            dataset for dataset in self.params.datasets if dataset.domain == "DM"
+            dataset
+            for dataset in self.data_service.get_datasets()
+            if dataset.domain == "DM"
         ]
         if not dm_datasets:
-            # Return none for all values if dm is not provided.
-            return [0] * len(self.evaluation_dataset[self.params.target])
+            raise DomainNotFoundError(
+                "Operation dy requires DM domain but Domain not found in datasets"
+            )
         if len(dm_datasets) > 1:
             dm_data = self.data_service.concat_split_datasets(
                 self.data_service.get_dataset, dm_datasets
             )
         else:
-            dm_data = self.data_service.get_dataset(
-                dataset_name=dm_datasets[0].full_path or dm_datasets[0].filename
-            )
+            dm_data = self.data_service.get_dataset(dataset_name=dm_datasets[0].name)
             dm_data = tag_source(dm_data, dm_datasets[0])
 
         new_dataset = self.evaluation_dataset.merge(

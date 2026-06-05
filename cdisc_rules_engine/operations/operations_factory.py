@@ -10,6 +10,9 @@ from cdisc_rules_engine.operations.define_dictionary_version_validator import (
 )
 from cdisc_rules_engine.operations.distinct import Distinct
 from cdisc_rules_engine.operations.extract_metadata import ExtractMetadata
+from cdisc_rules_engine.operations.get_library_class_domains import (
+    GetLibraryClassDomains,
+)
 from cdisc_rules_engine.operations.get_xhtml_errors import GetXhtmlErrors
 from cdisc_rules_engine.operations.library_column_order import LibraryColumnOrder
 from cdisc_rules_engine.operations.library_model_column_order import (
@@ -102,6 +105,7 @@ class OperationsFactory(FactoryInterface):
         "get_column_order_from_dataset": DatasetColumnOrder,
         "get_column_order_from_library": LibraryColumnOrder,
         "get_codelist_attributes": CodeListAttributes,
+        "get_library_class_domains": GetLibraryClassDomains,
         "get_model_column_order": LibraryModelColumnOrder,
         "get_model_filtered_variables": LibraryModelVariablesFilter,
         "get_parent_model_column_order": ParentLibraryModelColumnOrder,
@@ -163,7 +167,7 @@ class OperationsFactory(FactoryInterface):
         """Get instance of operation that matches operation specified in params"""
         required_args = {
             "operation_params",
-            "original_dataset",
+            "evaluation_dataset",
             "cache",
             "data_service",
             "library_metadata",
@@ -176,7 +180,7 @@ class OperationsFactory(FactoryInterface):
         if name in self._operations_map:
             return self._operations_map.get(name)(
                 kwargs.get("operation_params"),
-                kwargs.get("original_dataset"),
+                kwargs.get("evaluation_dataset"),
                 kwargs.get("cache"),
                 kwargs.get("data_service"),
                 kwargs.get("library_metadata"),

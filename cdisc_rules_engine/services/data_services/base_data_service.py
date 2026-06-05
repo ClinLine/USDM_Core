@@ -1,9 +1,7 @@
-import asyncio
-from abc import ABC
-from functools import wraps, partial
+from abc import ABC, abstractmethod
+from functools import wraps
 from typing import Callable, List, Optional, Iterable, Iterator
 from concurrent.futures import ThreadPoolExecutor
-import os
 import numpy as np
 import dask.dataframe as dd
 
@@ -30,17 +28,17 @@ from cdisc_rules_engine.constants.data_structures import (
 from cdisc_rules_engine.models.dataset_metadata import DatasetMetadata
 from cdisc_rules_engine.models.dataset_types import DatasetTypes
 from cdisc_rules_engine.services import logger
-from cdisc_rules_engine.services.cdisc_library_service import CDISCLibraryService
 from cdisc_rules_engine.services.data_readers import DataReaderFactory
 from cdisc_rules_engine.utilities.utils import (
-    convert_library_class_name_to_ct_class,
     get_dataset_cache_key_from_path,
-    get_directory_path,
-    search_in_list_of_dicts,
-    tag_source,
+    search_in_list,
     replace_nan_values_in_df,
 )
-from cdisc_rules_engine.utilities.sdtm_utilities import get_class_and_domain_metadata
+from cdisc_rules_engine.utilities.sdtm_utilities import (
+    convert_library_class_name_to_ct_class,
+    get_class_and_dataset_metadata,
+    tag_source,
+)
 from cdisc_rules_engine.models.dataset.dataset_interface import DatasetInterface
 from cdisc_rules_engine.models.dataset import PandasDataset
 from cdisc_rules_engine.models.sdtm_dataset_metadata import SDTMDatasetMetadata
@@ -104,9 +102,6 @@ class BaseDataService(DataServiceInterface, ABC):
         self.cache_service = cache_service
         self._reader_factory = reader_factory
         self._config = config
-        self.cdisc_library_service: CDISCLibraryService = CDISCLibraryService(
-            self._config.getValue("CDISC_LIBRARY_API_KEY", ""), self.cache_service
-        )
         self.standard = kwargs.get("standard")
         self.version = (kwargs.get("standard_version") or "").replace(".", "-")
         self.standard_substandard = kwargs.get("standard_substandard")
@@ -114,28 +109,15 @@ class BaseDataService(DataServiceInterface, ABC):
         self.dataset_implementation = kwargs.get(
             "dataset_implementation", PandasDataset
         )
-
-    def get_dataset_by_type(
-        self, dataset_name: str, dataset_type: str, **params
-    ) -> DatasetInterface:
-        """
-        Generic function to return dataset based on the type.
-        dataset_type param can be: contents, metadata, variables_metadata.
-        """
-        dataset_type_to_function_map: dict = {
-            DatasetTypes.CONTENTS.value: self.get_dataset,
-            DatasetTypes.METADATA.value: self.get_dataset_metadata,
-            DatasetTypes.VARIABLES_METADATA.value: self.get_variables_metadata,
-        }
-        return dataset_type_to_function_map[dataset_type](
-            dataset_name=dataset_name, **params
+        # Call the subclass implementation to populate metadata
+        self._datasets_metadata: dict[str, SDTMDatasetMetadata] = (
+            self._initialize_datasets_metadata(**kwargs)
         )
 
     def concat_split_datasets(
         self,
         func_to_call: Callable,
         datasets_metadata: Iterable[DatasetMetadata],
-        **kwargs,
     ) -> DatasetInterface:
         """
         Accepts a list of split dataset filenames, asynchronously downloads
@@ -144,53 +126,38 @@ class BaseDataService(DataServiceInterface, ABC):
         func_to_call must accept dataset_name and kwargs
         as input parameters and return pandas DataFrame.
         """
-        # pop drop_duplicates param at the beginning to avoid passing it to func_to_call
-        drop_duplicates: bool = kwargs.pop("drop_duplicates", False)
 
         # download datasets asynchronously
         datasets: Iterator[DatasetInterface] = self._async_get_datasets(
             func_to_call,
-            dataset_names=[dataset.full_path for dataset in datasets_metadata],
-            **kwargs,
+            dataset_names=[
+                dataset_metadata.name for dataset_metadata in datasets_metadata
+            ],
         )
         full_dataset = self.dataset_implementation()
         for dataset, dataset_metadata in zip(datasets, datasets_metadata):
             tagged_dataset = tag_source(dataset, dataset_metadata)
             full_dataset = full_dataset.concat(tagged_dataset, ignore_index=True)
 
-        if drop_duplicates:
-            full_dataset = full_dataset.drop_duplicates()
         return full_dataset
-
-    def check_filepath(self, dataset_names: List[str]) -> List:
-        """
-        Check if single file with multiple datasets.
-        """
-        return any(not os.path.exists(name) for name in dataset_names)
 
     def get_dataset_class(
         self,
         dataset: DatasetInterface,
-        file_path: str,
-        datasets: Iterable[SDTMDatasetMetadata],
         dataset_metadata: SDTMDatasetMetadata,
     ) -> Optional[str]:
         if self.library_metadata.standard_metadata:
-            class_data, _ = get_class_and_domain_metadata(
-                self.library_metadata.standard_metadata,
+            class_data, _ = get_class_and_dataset_metadata(
+                self.library_metadata,
                 dataset_metadata.unsplit_name,
             )
             name = class_data.get("name")
             if name:
                 return convert_library_class_name_to_ct_class(name)
-        return self._handle_custom_domains(
-            dataset, dataset_metadata, file_path, datasets
-        )
+        return self.handle_custom_domains(dataset, dataset_metadata)
 
     def get_data_structure(
         self,
-        file_path: str,
-        datasets: Iterable[SDTMDatasetMetadata],
         dataset_metadata: SDTMDatasetMetadata,
     ) -> Optional[str]:
         # TODO: look at defineXML if applicable for more accurate data structure detection
@@ -207,10 +174,8 @@ class BaseDataService(DataServiceInterface, ABC):
             return OCCDS
         return OTHER
 
-    @cached_dataset(DatasetTypes.METADATA.value)
-    def get_dataset_metadata(
-        self, dataset_name: str, size_unit: str = None, **params
-    ) -> DatasetInterface:
+    @cached_dataset(DatasetTypes.DATASET_METADATA.value)
+    def get_dataset_metadata(self, dataset_name: str, **params) -> DatasetInterface:
         """
         Gets metadata of a dataset and returns it as a DataFrame.
         """
@@ -229,12 +194,53 @@ class BaseDataService(DataServiceInterface, ABC):
         }
         return self.dataset_implementation.from_dict(metadata_to_return)
 
-    def _handle_custom_domains(
+    def get_raw_dataset_metadata(
+        self, dataset_name: str, **kwargs
+    ) -> SDTMDatasetMetadata:
+        """
+        Returns dataset metadata from the metadata dictionary.
+
+        Args:
+            dataset_name: Name or filename of the dataset
+
+        Returns:
+            SDTMDatasetMetadata instance
+
+        Raises:
+            KeyError: If dataset_name is not found in the metadata dictionary
+        """
+        if dataset_name not in self._datasets_metadata:
+            raise KeyError(
+                f"Dataset '{dataset_name}' not found in metadata. "
+                f"Available datasets: {list(self._datasets_metadata.keys())}"
+            )
+        return self._datasets_metadata[dataset_name]
+
+    def get_datasets(self) -> List[SDTMDatasetMetadata]:
+        """
+        Returns list of dataset metadata.
+        """
+        return list(self._datasets_metadata.values())
+
+    @abstractmethod
+    def _initialize_datasets_metadata(self, **kwargs) -> dict[str, SDTMDatasetMetadata]:
+        """
+        Initialize the dataset metadata dictionary.
+
+        Subclasses must implement this method to populate the metadata dictionary
+        with their specific logic for reading and organizing dataset metadata.
+
+        Args:
+            **kwargs: Additional keyword arguments passed from __init__
+
+        Returns:
+            Dictionary mapping dataset name to SDTMDatasetMetadata
+        """
+
+    def handle_custom_domains(
         self,
         dataset: DatasetInterface,
         dataset_metadata: SDTMDatasetMetadata,
-        file_path: str,
-        datasets: Iterable[SDTMDatasetMetadata],
     ):
         if self._contains_topic_variable(dataset, dataset_metadata.domain, "TERM"):
             return EVENTS
@@ -247,15 +253,11 @@ class BaseDataService(DataServiceInterface, ABC):
                 return FINDINGS_ABOUT
             return FINDINGS
         if dataset_metadata.is_ap:
-            return self._get_associated_persons_inherit_class(
-                file_path, datasets, dataset_metadata
-            )
+            return self._get_associated_persons_inherit_class(dataset_metadata)
         return None
 
     def _get_associated_persons_inherit_class(
         self,
-        file_path,
-        datasets: Iterable[SDTMDatasetMetadata],
         dataset_metadata: SDTMDatasetMetadata,
     ):
         """
@@ -264,24 +266,20 @@ class BaseDataService(DataServiceInterface, ABC):
         ap_suffix = dataset_metadata.ap_suffix
         if not ap_suffix:
             return None
-        directory_path = get_directory_path(file_path)
+        datasets = self.get_datasets()
         if len(datasets) > 1:
-            domain_details: SDTMDatasetMetadata = search_in_list_of_dicts(
+            new_dataset_metadata: SDTMDatasetMetadata = search_in_list(
                 datasets, lambda item: item.domain == ap_suffix
             )
-            if domain_details:
-                if domain_details.is_ap:
+            if new_dataset_metadata:
+                if new_dataset_metadata.is_ap:
                     raise ValueError("Nested Associated Persons domain reference")
-                file_name = domain_details.filename
-                new_file_path = os.path.join(directory_path, file_name)
-                new_domain_dataset = self.get_dataset(dataset_name=new_file_path)
+                new_dataset = self.get_dataset(dataset_name=new_dataset_metadata.name)
             else:
                 raise ValueError("Filename for domain doesn't exist")
             return self.get_dataset_class(
-                new_domain_dataset,
-                new_file_path,
-                datasets,
-                domain_details,
+                new_dataset,
+                new_dataset_metadata,
             )
         else:
             return None
@@ -323,14 +321,6 @@ class BaseDataService(DataServiceInterface, ABC):
         elif check_presence("RDOMAIN"):
             return check_presence(variable)
 
-    def _domain_starts_with(self, domain, variable):
-        """
-        Checks if the given dataset-class string starts with
-         a particular variable string.
-        Returns True/False
-        """
-        return domain.startswith(variable)
-
     @staticmethod
     def _replace_nans_in_numeric_cols_with_none(dataset: DatasetInterface):
         """
@@ -356,17 +346,6 @@ class BaseDataService(DataServiceInterface, ABC):
         else:
             dataset.data = replace_nan_values_in_df(dataset.data, valid_columns)
         return dataset
-
-    async def _async_get_dataset(
-        self, function_to_call: Callable, dataset_name: str, **kwargs
-    ) -> DatasetInterface:
-        """
-        Asynchronously executes passed function_to_call.
-        """
-        loop = asyncio.get_event_loop()
-        return await loop.run_in_executor(
-            None, partial(function_to_call, dataset_name=dataset_name, **kwargs)
-        )
 
     def _async_get_datasets(
         self, function_to_call: Callable, dataset_names: List[str], **kwargs
