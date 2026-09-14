@@ -133,7 +133,7 @@
   },
   {
     "core_id": "CORE-000823",
-    "tags": "All, when included"
+    "tags": ["All, when included", "M11 conformance"]
   },
   {
     "core_id": "CORE-000824",
@@ -309,7 +309,7 @@
   },
   {
     "core_id": "CORE-000931",
-    "tags": "All, when included"
+    "tags": ["All, when included", "M11 conformance"]
   },
   {
     "core_id": "CORE-000933",
@@ -445,11 +445,11 @@
   },
   {
     "core_id": "CORE-000973",
-    "tags": "Organizations & Roles"
+    "tags": ["Organizations & Roles", "M11 conformance"]
   },
   {
     "core_id": "CORE-000974",
-    "tags": "Organizations & Roles"
+    "tags": ["Organizations & Roles", "M11 conformance"]
   },
   {
     "core_id": "CORE-000975",
@@ -549,7 +549,7 @@
   },
   {
     "core_id": "CORE-001000",
-    "tags": "Organizations & Roles"
+    "tags": ["Organizations & Roles", "M11 conformance"]
   },
   {
     "core_id": "CORE-001001",
@@ -737,7 +737,7 @@
   },
   {
     "core_id": "CORE-001054",
-    "tags": "All, when included"
+    "tags": ["All, when included", "M11 conformance"]
   },
   {
     "core_id": "CORE-001055",
@@ -826,5 +826,13 @@
   {
     "core_id": "CORE-001077",
     "tags": "Interventions"
+  },
+  {
+    "core_id": "CLIN-001001",
+    "tags": ["Encounter logic", "M11 conformance"]
+  },
+  {
+    "core_id": "CLIN-001002",
+    "tags": ["M11 conformance"]
   }
 ]

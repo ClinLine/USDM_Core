@@ -152,3 +152,7 @@ resources/cache/custom_rules.pkl
 /build-output
 Dockerfile.build
 .github/copilot-instructions.md
+
+#Ignore specific .converted pkl files
+resources/cache/rules.json
+resources/cache/rules_dictionary.json
