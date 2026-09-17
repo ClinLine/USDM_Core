@@ -30,5 +30,7 @@ Validation_args = namedtuple(
         "encoding",
         "variables_csv_path",
         "datasets_csv_path",
+        "validation_packages",
     ],
 )
+Validation_args.__new__.__defaults__ = (None,)

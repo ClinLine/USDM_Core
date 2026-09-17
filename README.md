@@ -1,9 +1,9 @@
 # Note: this is a forked version of CDISC's Rules engine. This forked version enables the run of custom sets of USDM CORE rules.
-- In the resources a json file is included indicating the tags for each of the USDM core rules. This file can be adapted based on new insights and preferences.
+- In the resources a JSON file is included indicating the validation packages for each of the USDM core rules. This file can be adapted based on new insights and preferences.
 - Updated core.py
 
 Adjusted run statement to be applied:
-- python core.py validate -s usdm -v 4-0 -dp USDM_file.json -rt "RulesetNames divided by ,"
+- python core.py validate -s usdm -v 4-0 -dp USDM_file.json -vp "RulesetNames divided by ,"
 
 See our video for explanation of how it runs: https://youtu.be/fjM_t01bex8 
 Our Break & Learn webinar of February 2026 gives more background and detail. Register for free via www.clinline.eu/break-learn

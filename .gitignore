@@ -156,3 +156,6 @@ Dockerfile.build
 #Ignore specific .converted pkl files
 resources/cache/rules.json
 resources/cache/rules_dictionary.json
+
+#Ignore Copilot AGENTS.md
+AGENTS.md

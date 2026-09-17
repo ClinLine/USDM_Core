@@ -75,16 +75,31 @@ class USDMReportData(BaseReportData):
             ReportMetadataItem("Version", 8, f"V{self._version}")
         )
         if self._datasets:
+            validation_packages = getattr(self._args, "validation_packages", None)
+            package_names = ""
+            if isinstance(validation_packages, (list, tuple)):
+                package_names = ", ".join(
+                    f'"{package}"' for package in validation_packages if package
+                )
+            elif isinstance(validation_packages, str):
+                package_names = f'"{validation_packages.strip()}"'
+            conformance_details.append(
+                ReportMetadataItem(
+                    "Validation packages",
+                    9,
+                    package_names,
+                )
+            )
             conformance_details.append(
                 ReportMetadataItem(
                     "JSON file name",
-                    9,
+                    10,
                     self._datasets[0].filename,
                 )
             )
             conformance_details.append(
                 ReportMetadataItem(
-                    "Modified Time Stamp", 10, self._datasets[0].modification_date
+                    "Modified Time Stamp", 11, self._datasets[0].modification_date
                 )
             )
         return conformance_details

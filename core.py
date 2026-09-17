@@ -12,6 +12,7 @@ import pickle
 import sys
 import tempfile
 from datetime import datetime
+from functools import lru_cache
 from multiprocessing import freeze_support
 from pathlib import Path
 
@@ -297,6 +298,38 @@ def load_custom_dotenv_from_data_options(_ctx, _param, value):
     return value
 
 
+def _parse_validation_packages(
+    validation_packages: str, known_packages: set[str]
+) -> list[str]:
+    """Parse packages while allowing commas inside known package names."""
+    raw_value = validation_packages.strip()
+    ordered_packages = sorted(known_packages, key=len, reverse=True)
+
+    @lru_cache(maxsize=None)
+    def parse(position: int) -> tuple[str, ...] | None:
+        while position < len(raw_value) and raw_value[position].isspace():
+            position += 1
+        if position == len(raw_value):
+            return ()
+
+        for package in ordered_packages:
+            if not raw_value.startswith(package, position):
+                continue
+            end = position + len(package)
+            if end < len(raw_value) and raw_value[end] != ",":
+                continue
+            next_position = end + 1 if end < len(raw_value) else end
+            parsed = parse(next_position)
+            if parsed is not None:
+                return (package, *parsed)
+        return None
+
+    parsed_packages = parse(0)
+    if parsed_packages is not None:
+        return list(parsed_packages)
+    return [package.strip() for package in raw_value.split(",") if package.strip()]
+
+
 @click.command()
 @click.option(
     "-ca",
@@ -449,10 +482,10 @@ def load_custom_dotenv_from_data_options(_ctx, _param, value):
     help="Specify rule core ID to exclude, ex. CORE-000001. Can be specified multiple times",
 )
 @click.option(
-    "--rules-tags",
-    "-rt",
+    "--validation-packages",
+    "-vp",
     required=False,
-    help="Filter rules by one or more tags (comma-separated) from resources/rules_with_tags.json (excludes --rules and --exclude-rules)",
+    help="Filter rules by one or more packages (comma-separated) from resources/cache/validation_packages.json (excludes --rules and --exclude-rules)",
 )
 @click.option(
     "--local-rules",
@@ -581,7 +614,7 @@ def validate(  # noqa
     snomed_url: str,
     rules: tuple[str],
     exclude_rules: tuple[str],
-    rules_tags: str,
+    validation_packages: str,
     local_rules: str,
     custom_standard: bool,
     progress: str,
@@ -601,8 +634,8 @@ def validate(  # noqa
 
     python core.py -s SDTM -v 3.4 -d /path/to/datasets
     
-    --rules-tags example:
-    python core.py --rules-tags "adverse events","demographics"
+    --validation-packages example:
+    python core.py --validation-packages "adverse events","demographics"
     """
 
     # Validate conditional options
@@ -637,33 +670,41 @@ def validate(  # noqa
             ctx.exit(2)
 
     # Enforce exclusivity
-    if sum(bool(x) for x in [rules, exclude_rules, rules_tags]) > 1:
-        logger.error("--rules, --exclude-rules and --rules-tags are mutually exclusive. Use only one of these options.")
+    if sum(bool(x) for x in [rules, exclude_rules, validation_packages]) > 1:
+        logger.error("--rules, --exclude-rules and --validation-packages are mutually exclusive. Use only one of these options.")
         ctx.exit(2)
 
-    # If rules_tags is provided, load the correct core_ids from JSON (supports multiple tags)
-    if rules_tags:
-        rules_with_tags_path = os.path.join(os.path.dirname(__file__), "resources", "rules_with_tags.json")
-        if not os.path.exists(rules_with_tags_path):
-            logger.error(f"rules_with_tags.json not found at {rules_with_tags_path}")
+    # If validation packages are provided, load the matching core IDs from JSON.
+    if validation_packages:
+        validation_packages_path = os.path.join(
+            os.path.dirname(__file__), "resources", "cache", "validation_packages.json"
+        )
+        if not os.path.exists(validation_packages_path):
+            logger.error(f"validation_packages.json not found at {validation_packages_path}")
             ctx.exit(2)
-        with open(rules_with_tags_path, encoding="utf-8") as f:
+        with open(validation_packages_path, encoding="utf-8") as f:
             rules_data = json.load(f)
 
-        # equates:
-        # tags = []
-        # substrings = rules_tags.split(",") devide into substrings
-        # for rule in substrings: for each rule in substrings
-        #     if rule.strip(): if the rule is not just whitespace
-        #         tags.append(rule.strip())
-        tags = [t.strip() for t in rules_tags.split(",") if t.strip()]
+        known_packages = {
+            package.strip()
+            for rule in rules_data
+            for package in (
+                rule.get("packages", [])
+                if isinstance(rule.get("packages", []), list)
+                else [rule.get("packages")]
+            )
+            if isinstance(package, str) and package.strip()
+        }
+        packages = _parse_validation_packages(validation_packages, known_packages)
         filtered_core_ids = set()
         for r in rules_data:
-            rules_tags = r.get("tags", [])
-            if any(tag in rules_tags for tag in tags):
+            rule_packages = r.get("packages", [])
+            if isinstance(rule_packages, str):
+                rule_packages = [rule_packages]
+            if any(package in rule_packages for package in packages):
                 filtered_core_ids.add(r["core_id"])
         if not filtered_core_ids:
-            logger.error(f"No rules found with tags: {', '.join(tags)}")
+            logger.error(f"No rules found with packages: {', '.join(packages)}")
             ctx.exit(2)
         rules = tuple(filtered_core_ids)
 
@@ -737,6 +778,7 @@ def validate(  # noqa
             encoding,
             variables_csv_path,
             datasets_csv_path,
+            packages if validation_packages else None,
         )
     )
 
