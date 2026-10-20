@@ -2,48 +2,36 @@
   {
     "core_id": "CORE-000402",
     "packages": [
-      "Timeline",
-      "Test",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000403",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000404",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000407",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000408",
     "packages": [
-      "Activity Details",
-      "Test",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-000413",
-    "packages": "Amendments"
-  },
-  {
     "core_id": "CORE-000414",
     "packages": [
-      "Arms, Epochs & Elements",
       "Handbook 1",
       "Handbook 2"
     ]
@@ -51,7 +39,6 @@
   {
     "core_id": "CORE-000416",
     "packages": [
-      "All, when included",
       "Handbook 1",
       "Handbook 2"
     ]
@@ -59,14 +46,12 @@
   {
     "core_id": "CORE-000417",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000419",
     "packages": [
-      "All, when included",
       "Handbook 1",
       "Handbook 2"
     ]
@@ -74,29 +59,18 @@
   {
     "core_id": "CORE-000423",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-000424",
-    "packages": "All, when included"
-  },
-  {
-    "core_id": "CORE-000427",
-    "packages": "All, when included"
-  },
-  {
     "core_id": "CORE-000428",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000449",
     "packages": [
-      "Arms, Epochs & Elements",
       "Handbook 1",
       "Handbook 2"
     ]
@@ -104,39 +78,30 @@
   {
     "core_id": "CORE-000804",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000805",
     "packages": [
-      "Population & Eligibility",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-000806",
-    "packages": "Amendments"
-  },
-  {
     "core_id": "CORE-000807",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000808",
     "packages": [
-      "All, when included",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000809",
     "packages": [
-      "Arms, Epochs & Elements",
       "Handbook 1",
       "Handbook 2"
     ]
@@ -144,152 +109,102 @@
   {
     "core_id": "CORE-000811",
     "packages": [
-      "Activity Details",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-000812",
-    "packages": "Activity Details"
-  },
-  {
-    "core_id": "CORE-000813",
-    "packages": "All, when included"
-  },
-  {
-    "core_id": "CORE-000814",
-    "packages": "All, when included"
-  },
-  {
     "core_id": "CORE-000815",
     "packages": [
-      "Population & Eligibility",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000816",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000817",
     "packages": [
-      "All, when included",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000818",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000819",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000820",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-000821",
-    "packages": "Footnotes"
-  },
-  {
     "core_id": "CORE-000822",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000823",
     "packages": [
-      "All, when included",
-      "M11 conformance",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000824",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000825",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000826",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000827",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-000828",
-    "packages": "All, when included"
-  },
-  {
     "core_id": "CORE-000829",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000830",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-000831",
-    "packages": "All, when included"
-  },
-  {
-    "core_id": "CORE-000832",
-    "packages": "Interventions"
-  },
-  {
     "core_id": "CORE-000833",
     "packages": [
-      "All, when included",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-000834",
-    "packages": "All, when included"
-  },
-  {
     "core_id": "CORE-000835",
     "packages": [
-      "Arms, Epochs & Elements",
       "Handbook 1",
       "Handbook 2"
     ]
@@ -297,7 +212,6 @@
   {
     "core_id": "CORE-000836",
     "packages": [
-      "Arms, Epochs & Elements",
       "Handbook 1",
       "Handbook 2"
     ]
@@ -305,21 +219,18 @@
   {
     "core_id": "CORE-000837",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000838",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000839",
     "packages": [
-      "Arms, Epochs & Elements",
       "Handbook 1",
       "Handbook 2"
     ]
@@ -327,14 +238,12 @@
   {
     "core_id": "CORE-000840",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000849",
     "packages": [
-      "Arms, Epochs & Elements",
       "Handbook 1",
       "Handbook 2"
     ]
@@ -342,229 +251,156 @@
   {
     "core_id": "CORE-000851",
     "packages": [
-      "All, when included",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000854",
     "packages": [
-      "Population & Eligibility",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000855",
     "packages": [
-      "Interventions",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000856",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000857",
     "packages": [
-      "Population & Eligibility",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000858",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-000859",
-    "packages": "Interventions"
-  },
-  {
     "core_id": "CORE-000860",
     "packages": [
-      "Interventions",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000861",
     "packages": [
-      "Interventions",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000868",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-000869",
-    "packages": "All, when included"
-  },
-  {
     "core_id": "CORE-000870",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000871",
     "packages": [
-      "Objectives & Endpoints",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-000873",
-    "packages": "All, when included"
-  },
-  {
     "core_id": "CORE-000874",
     "packages": [
-      "Objectives & Endpoints",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000875",
     "packages": [
-      "Population & Eligibility",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000877",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000878",
     "packages": [
-      "Footnotes",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000879",
     "packages": [
-      "All, when included",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000900",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000904",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000905",
     "packages": [
-      "Timeline ",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000907",
     "packages": [
-      "Interventions",
       "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000925",
-    "packages": "All, when included"
-  },
-  {
-    "core_id": "CORE-000930",
-    "packages": "Amendments"
-  },
-  {
-    "core_id": "CORE-000931",
-    "packages": [
-      "All, when included",
-      "M11 conformance"
     ]
   },
   {
     "core_id": "CORE-000933",
     "packages": [
-      "All, when included",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-000935",
-    "packages": "Full, schema checking"
-  },
-  {
-    "core_id": "CORE-000937",
-    "packages": "Full, schema checking"
-  },
-  {
-    "core_id": "CORE-000938",
-    "packages": "Full, schema checking"
-  },
-  {
     "core_id": "CORE-000939",
     "packages": [
-      "Objectives & Endpoints",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000940",
     "packages": [
-      "Objectives & Endpoints",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000941",
     "packages": [
-      "Arms",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000942",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-000943",
-    "packages": "Documents"
-  },
-  {
-    "core_id": "CORE-000944",
-    "packages": "Documents"
-  },
-  {
     "core_id": "CORE-000945",
     "packages": [
-      "All, when included",
       "Handbook 1",
       "Handbook 2"
     ]
@@ -572,483 +408,218 @@
   {
     "core_id": "CORE-000948",
     "packages": [
-      "Arms, Epochs & Elements",
       "Handbook 1",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-000949",
-    "packages": "Full, schema checking"
-  },
-  {
     "core_id": "CORE-000950",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
-  },
-  {
-    "core_id": "CORE-000951",
-    "packages": "Documents"
   },
   {
     "core_id": "CORE-000954",
     "packages": [
-      "Activity Details",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-000955",
-    "packages": "All, when included"
-  },
-  {
-    "core_id": "CORE-000956",
-    "packages": "All, when included"
-  },
-  {
-    "core_id": "CORE-000957",
-    "packages": "Interventions"
-  },
-  {
-    "core_id": "CORE-000958",
-    "packages": "All, when included"
-  },
-  {
-    "core_id": "CORE-000959",
-    "packages": "Amendments"
-  },
-  {
     "core_id": "CORE-000961",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-000962",
     "packages": [
-      "Population & Eligibility",
       "Handbook 1"
     ]
-  },
-  {
-    "core_id": "CORE-000963",
-    "packages": "Population & Eligibility"
-  },
-  {
-    "core_id": "CORE-000964",
-    "packages": "Documents"
-  },
-  {
-    "core_id": "CORE-000965",
-    "packages": "Documents"
-  },
-  {
-    "core_id": "CORE-000966",
-    "packages": "Interventions"
   },
   {
     "core_id": "CORE-000967",
     "packages": [
-      "Interventions",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-000968",
-    "packages": "Documents"
-  },
-  {
-    "core_id": "CORE-000969",
-    "packages": "Interventions"
-  },
-  {
-    "core_id": "CORE-000970",
-    "packages": "Organizations & Roles"
-  },
-  {
-    "core_id": "CORE-000971",
-    "packages": "Organizations & Roles"
-  },
-  {
-    "core_id": "CORE-000972",
-    "packages": "Organizations & Roles"
-  },
-  {
-    "core_id": "CORE-000973",
-    "packages": [
-      "Organizations & Roles",
-      "M11 conformance"
-    ]
-  },
-  {
-    "core_id": "CORE-000974",
-    "packages": [
-      "Organizations & Roles",
-      "M11 conformance"
-    ]
-  },
-  {
-    "core_id": "CORE-000975",
-    "packages": "Interventions (Devices)"
-  },
-  {
-    "core_id": "CORE-000976",
-    "packages": "Interventions"
-  },
-  {
-    "core_id": "CORE-000977",
-    "packages": "Interventions (Devices)"
-  },
-  {
     "core_id": "CORE-000978",
     "packages": [
-      "Interventions",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000979",
     "packages": [
-      "Study Design (interventional)",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000980",
     "packages": [
-      "Study Design",
       "Handbook 1"
     ]
-  },
-  {
-    "core_id": "CORE-000981",
-    "packages": "Population & Eligibility"
   },
   {
     "core_id": "CORE-000982",
     "packages": [
-      "Population & Eligibility",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-000983",
-    "packages": "Interventions"
-  },
-  {
-    "core_id": "CORE-000984",
-    "packages": "Amendments"
-  },
-  {
-    "core_id": "CORE-000985",
-    "packages": "Amendments"
-  },
-  {
-    "core_id": "CORE-000986",
-    "packages": "Interventions"
-  },
-  {
     "core_id": "CORE-000987",
     "packages": [
-      "Study Design (interventional)",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000988",
     "packages": [
-      "Study Design (interventional)",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000989",
     "packages": [
-      "Study Design (interventional)",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000990",
     "packages": [
-      "Study Design",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000991",
     "packages": [
-      "Study Design (observational)",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-000992",
     "packages": [
-      "Study Design (observational)",
       "Handbook 1"
     ]
-  },
-  {
-    "core_id": "CORE-000994",
-    "packages": "All, when included"
-  },
-  {
-    "core_id": "CORE-000995",
-    "packages": "All, when included"
   },
   {
     "core_id": "CORE-000996",
     "packages": [
-      "Population & Eligibility",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-000997",
-    "packages": "Organizations & Roles"
-  },
-  {
-    "core_id": "CORE-000998",
-    "packages": "Documents"
-  },
-  {
-    "core_id": "CORE-000999",
-    "packages": "Documents"
-  },
-  {
-    "core_id": "CORE-001000",
-    "packages": [
-      "Organizations & Roles",
-      "M11 conformance"
-    ]
-  },
-  {
-    "core_id": "CORE-001001",
-    "packages": "Interventions"
-  },
-  {
     "core_id": "CORE-001002",
     "packages": [
-      "Study Design",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-001003",
     "packages": [
-      "Study Design",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-001004",
-    "packages": "Study Design (observational)"
-  },
-  {
     "core_id": "CORE-001005",
     "packages": [
-      "Study Design (observational)",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-001006",
     "packages": [
-      "Activity Details",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-001007",
-    "packages": "Interventions"
-  },
-  {
-    "core_id": "CORE-001008",
-    "packages": "Interventions"
-  },
-  {
     "core_id": "CORE-001009",
     "packages": [
-      "All, when included",
       "Handbook 1"
     ]
-  },
-  {
-    "core_id": "CORE-001010",
-    "packages": "Interventions"
-  },
-  {
-    "core_id": "CORE-001011",
-    "packages": "Amendments"
-  },
-  {
-    "core_id": "CORE-001012",
-    "packages": "All, when included"
-  },
-  {
-    "core_id": "CORE-001013",
-    "packages": "All, when included"
   },
   {
     "core_id": "CORE-001014",
     "packages": [
-      "Organizations & Roles",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-001015",
-    "packages": "All, when included"
-  },
-  {
     "core_id": "CORE-001016",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-001017",
     "packages": [
-      "Study Design",
       "Handbook 1"
     ]
-  },
-  {
-    "core_id": "CORE-001018",
-    "packages": "Population & Eligibility"
-  },
-  {
-    "core_id": "CORE-001019",
-    "packages": "Population & Eligibility"
-  },
-  {
-    "core_id": "CORE-001020",
-    "packages": "Interventions"
-  },
-  {
-    "core_id": "CORE-001021",
-    "packages": "Interventions"
-  },
-  {
-    "core_id": "CORE-001022",
-    "packages": "Interventions"
   },
   {
     "core_id": "CORE-001023",
     "packages": [
-      "Study Design (interventional)",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-001024",
-    "packages": "Study Design (interventional)"
-  },
-  {
-    "core_id": "CORE-001025",
-    "packages": "General study design (observational)"
-  },
-  {
     "core_id": "CORE-001026",
     "packages": [
-      "Arms, Epochs & Elements",
       "Handbook 1",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-001027",
-    "packages": "Population & Eligibility"
-  },
-  {
-    "core_id": "CORE-001028",
-    "packages": "Population & Eligibility"
-  },
-  {
-    "core_id": "CORE-001029",
-    "packages": "Population & Eligibility"
-  },
-  {
     "core_id": "CORE-001030",
     "packages": [
-      "Interventions",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-001031",
-    "packages": "Amendments"
-  },
-  {
-    "core_id": "CORE-001032",
-    "packages": "Study Design"
-  },
-  {
     "core_id": "CORE-001033",
     "packages": [
-      "Study Design",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-001035",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-001036",
     "packages": [
-      "Objectives & Endpoints",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-001038",
     "packages": [
-      "Footnotes",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-001039",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-001041",
-    "packages": "Documents"
-  },
-  {
-    "core_id": "CORE-001042",
-    "packages": "All, when included"
-  },
-  {
     "core_id": "CORE-001045",
     "packages": [
-      "Arms",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-001047",
     "packages": [
-      "Activity Details",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-001048",
     "packages": [
-      "Arms, Epochs & Elements",
       "Handbook 1",
       "Handbook 2"
     ]
@@ -1056,160 +627,74 @@
   {
     "core_id": "CORE-001049",
     "packages": [
-      "All, when included",
       "Handbook 1"
     ]
-  },
-  {
-    "core_id": "CORE-001051",
-    "packages": "Documents"
-  },
-  {
-    "core_id": "CORE-001052",
-    "packages": "Documents"
-  },
-  {
-    "core_id": "CORE-001053",
-    "packages": "Abbreviations"
   },
   {
     "core_id": "CORE-001054",
     "packages": [
-      "All, when included",
-      "M11 conformance",
       "Handbook 1"
     ]
-  },
-  {
-    "core_id": "CORE-001055",
-    "packages": "Documents"
   },
   {
     "core_id": "CORE-001056",
     "packages": [
-      "Study Design (observational)",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-001057",
-    "packages": "Study Design (observational)"
-  },
-  {
     "core_id": "CORE-001058",
     "packages": [
-      "Study Design",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-001059",
     "packages": [
-      "Study Design",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-001060",
     "packages": [
-      "All, when included",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-001061",
     "packages": [
-      "Population & Eligibility",
       "Handbook 1"
     ]
   },
   {
     "core_id": "CORE-001062",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
     "core_id": "CORE-001063",
     "packages": [
-      "Organizations & Roles",
       "Handbook 1"
     ]
   },
   {
-    "core_id": "CORE-001065",
-    "packages": "Interventions"
-  },
-  {
     "core_id": "CORE-001066",
     "packages": [
-      "Timeline",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-001067",
-    "packages": "Abbreviations"
-  },
-  {
-    "core_id": "CORE-001068",
-    "packages": "Documents"
-  },
-  {
-    "core_id": "CORE-001069",
-    "packages": "Documents"
-  },
-  {
-    "core_id": "CORE-001070",
-    "packages": "Organizations & Roles"
-  },
-  {
-    "core_id": "CORE-001071",
-    "packages": "Organizations & Roles"
-  },
-  {
-    "core_id": "CORE-001072",
-    "packages": "Organizations & Roles"
-  },
-  {
-    "core_id": "CORE-001073",
-    "packages": "Documents"
-  },
-  {
     "core_id": "CORE-001074",
     "packages": [
-      "All, when included",
       "Handbook 1",
       "Handbook 2"
     ]
   },
   {
-    "core_id": "CORE-001075",
-    "packages": "All, when included"
-  },
-  {
-    "core_id": "CORE-001076",
-    "packages": "Activity Details"
-  },
-  {
     "core_id": "CORE-001077",
     "packages": [
-      "Interventions",
       "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CLIN-001001",
-    "packages": [
-      "Encounter logic",
-      "M11 conformance"
-    ]
-  },
-  {
-    "core_id": "CLIN-001002",
-    "packages": [
-      "M11 conformance"
     ]
   }
 ]
