@@ -710,8 +710,14 @@ def validate(  # noqa
                     continue
 
                 with open(file_path) as f:
-                    found_json = json.load(f)
-                    found_validation_packages.append(found_json)
+                    try:
+                        found_json = json.load(f)
+                        found_validation_packages.append(found_json)
+                    except json.JSONDecodeError:
+                        logger.error(
+                            f"Validation package at resources/validation_packages/{entry.name} contains invalid JSON"
+                        )
+                        ctx.exit(2)
 
         if not found_validation_packages:
             logger.error(
