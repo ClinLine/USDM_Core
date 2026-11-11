@@ -686,17 +686,19 @@ def validate(  # noqa
             ctx.exit(2)
 
         if validation_packages:
-            logger.error("Cannot use both --validation-package and --exclude-rules flags together.")
+            logger.error(
+                "Cannot use both --validation-package and --exclude-rules flags together."
+            )
             ctx.exit(2)
-
-
 
     used_packages: list[str] | None = None
     if validation_packages:
         if not rules:
             rules = tuple()
 
-        validation_packages_directory = os.path.join(os.path.dirname(__file__), "resources", "validation_packages")
+        validation_packages_directory = os.path.join(
+            os.path.dirname(__file__), "resources", "validation_packages"
+        )
         found_validation_packages: list[dict] = []
 
         for entry in os.scandir(validation_packages_directory):
@@ -712,7 +714,9 @@ def validate(  # noqa
                     found_validation_packages.append(found_json)
 
         if not found_validation_packages:
-            logger.error("Validation packages specified, but no sources found in resources/validation_packages/")
+            logger.error(
+                "Validation packages specified, but no sources found in resources/validation_packages/"
+            )
             ctx.exit(2)
 
         filtered_core_ids: set[str] = set()
@@ -721,7 +725,9 @@ def validate(  # noqa
         for rule_data in found_validation_packages:
             for rule in rule_data:
                 packages = rule.get("packages", [])
-                if any(check_package in validation_packages for check_package in packages):
+                if any(
+                    check_package in validation_packages for check_package in packages
+                ):
                     found_core_id: str | None = rule.get("core_id", None)
 
                     if not found_core_id:
@@ -732,9 +738,10 @@ def validate(  # noqa
 
                     filtered_core_ids.add(found_core_id)
 
-
         if not filtered_core_ids:
-            logger.error(f"No rules found with packages: {', '.join(validation_packages)}")
+            logger.error(
+                f"No rules found with packages: {', '.join(validation_packages)}"
+            )
 
         for rule in rules:
             filtered_core_ids.add(rule)
@@ -816,7 +823,7 @@ def validate(  # noqa
             encoding,
             variables_csv_path,
             datasets_csv_path,
-            used_packages
+            used_packages,
         )
     )
 

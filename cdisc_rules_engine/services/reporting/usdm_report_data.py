@@ -79,7 +79,9 @@ class USDMReportData(BaseReportData):
 
         if self._datasets:
 
-            validation_packages: list[str] | None = getattr(self._args, "validation_packages", None)
+            validation_packages: list[str] | None = getattr(
+                self._args, "validation_packages", None
+            )
 
             package_names = ""
             if isinstance(validation_packages, list):
@@ -90,9 +92,8 @@ class USDMReportData(BaseReportData):
                     "Validation Packages",
                     9,
                     package_names,
-                    )
                 )
-
+            )
 
             conformance_details.append(
                 ReportMetadataItem(
@@ -103,12 +104,9 @@ class USDMReportData(BaseReportData):
             )
             conformance_details.append(
                 ReportMetadataItem(
-                    "Modified Time Stamp",
-                    11,
-                    self._datasets[0].modification_date
+                    "Modified Time Stamp", 11, self._datasets[0].modification_date
                 )
             )
-
 
         return conformance_details
 
