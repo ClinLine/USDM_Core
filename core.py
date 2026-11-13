@@ -746,6 +746,7 @@ def validate(  # noqa
             logger.error(
                 f"No rules found with packages: {', '.join(validation_packages)}"
             )
+            ctx.exit(2)
 
         for rule in rules:
             filtered_core_ids.add(rule)
