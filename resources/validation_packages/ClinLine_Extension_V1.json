@@ -1,50 +1,12 @@
-[
-  {
-    "core_id": "CORE-000949",
-    "packages": [
-      "test"
-    ]
-  },
-    {
-    "core_id": "CORE-000935",
-    "packages": [
-      "test"
-    ]
-  },
-    {
-    "core_id": "CORE-000937",
-    "packages": [
-      "test"
-    ]
-  },
-    {
-    "core_id": "CORE-000938",
-    "packages": [
-      "test"
-    ]
-  },
-    {
-    "core_id": "CORE-001015",
-    "packages": [
-      "test"
-    ]
-  },
-  {
-    "core_id": "UEXT0002",
-    "packages": [
-      "test"
-    ]
-  },
-  {
-    "core_id": "UEXT0003",
-    "packages": [
-      "test"
-    ]
-  },
-  {
-    "core_id": "UEXT0004",
-    "packages": [
-      "test"
-    ]
-  }
-]
+{
+  "test": [
+    "CORE-000949",
+    "CORE-000935",
+    "CORE-000937",
+    "CORE-000938",
+    "CORE-001015",
+    "UEXT0002",
+    "UEXT0003",
+    "UEXT0004"
+  ]
+}

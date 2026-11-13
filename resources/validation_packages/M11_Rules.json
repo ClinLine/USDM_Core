@@ -1,50 +1,25 @@
-[
-  {
-    "core_id": "CORE-000949",
-    "packages": [
-      "test"
-    ]
-  },
-    {
-    "core_id": "CORE-000935",
-    "packages": [
-      "test"
-    ]
-  },
-    {
-    "core_id": "CORE-000937",
-    "packages": [
-      "test"
-    ]
-  },
-    {
-    "core_id": "CORE-000938",
-    "packages": [
-      "test"
-    ]
-  },
-    {
-    "core_id": "CORE-001015",
-    "packages": [
-      "test"
-    ]
-  },
-  {
-    "core_id": "UEXT0002",
-    "packages": [
-      "test"
-    ]
-  },
-  {
-    "core_id": "UEXT0003",
-    "packages": [
-      "test"
-    ]
-  },
-  {
-    "core_id": "UEXT0004",
-    "packages": [
-      "test"
-    ]
-  }
-]
+{
+  "M11": [
+    "M110001",
+    "M110002",
+    "M110003",
+    "DDF00115",
+    "M110004",
+    "DDF00172",
+    "M110005",
+    "M110006",
+    "M110007",
+    "LOG0001",
+    "DDF00144",
+    "M110008",
+    "M110009",
+    "M110010",
+    "M110011",
+    "M110012",
+    "M110013",
+    "DDF00201",
+    "DDF00202",
+    "DDF00203",
+    "M110014"
+  ]
+}
