@@ -1,0 +1,155 @@
+{
+  "M110001": {
+    "core_id": "M110001",
+    "author": "ClinLine",
+    "reference": [
+      [
+        {
+          "Citations": [
+            {
+              "Cited_Guidance": "",
+              "Document": ""
+            }
+          ],
+          "Origin": "",
+          "Rule_Identifier": {
+            "Id": "",
+            "Version": ""
+          },
+          "Version": ""
+        }
+      ]
+    ],
+    "sensitivity": "Record",
+    "executability": "fully executable",
+    "description": "An M11 protocol document template must be specified as M11.",
+    "authorities": [
+      {
+        "Organization": "ClinLine",
+        "Standards": [
+                    {
+            "Name": "",
+            "References": [
+              {
+                "Citations": [
+                  {
+                    "Cited_Guidance": "",
+                    "Document": ""
+                  }
+                ],
+                "Origin": "",
+                "Rule_Identifier": {
+                  "Id": "",
+                  "Version": ""
+                },
+                "Version": ""
+              }
+            ],
+            "Version": ""
+          }
+        ]
+      }
+    ],
+    "standards": [],
+    "classes": null,
+    "domains": null,
+    "entities": {
+      "Include": [
+      ]
+    },
+    "rule_type": "JSONata",
+    "conditions": "study[(\"M11\" in documentedBy.templateName) = false].{\"instanceType\":instanceType,\"id\":id,\"path\":\"study\",\"StudyDefinitionDocument.templateName\": documentedBy.templateName}",
+    "actions": [
+      {
+        "name": "generate_dataset_error_objects",
+        "params": {
+          "message": "No document is specified with a template name defined as \"M11\"."
+        }
+      }
+    ],
+    "use_case": null,
+    "data_structures": null,
+    "status": "Published",
+    "output_variables": [
+      "isInstance",
+      "StudyDefinitionDocument.templateName"
+    ]
+  },
+  "M110002": {
+    "core_id": "M110002",
+    "author": "ClinLine",
+    "reference": [
+      [
+        {
+          "Citations": [
+            {
+              "Cited_Guidance": "",
+              "Document": ""
+            }
+          ],
+          "Origin": "",
+          "Rule_Identifier": {
+            "Id": "",
+            "Version": ""
+          },
+          "Version": ""
+        }
+      ]
+    ],
+    "sensitivity": "Record",
+    "executability": "fully executable",
+    "description": "Maximum one study definition document should be defined as following the M11 template.",
+    "authorities": [
+      {
+        "Organization": "ClinLine",
+        "Standards": [
+                    {
+            "Name": "",
+            "References": [
+              {
+                "Citations": [
+                  {
+                    "Cited_Guidance": "",
+                    "Document": ""
+                  }
+                ],
+                "Origin": "",
+                "Rule_Identifier": {
+                  "Id": "",
+                  "Version": ""
+                },
+                "Version": ""
+              }
+            ],
+            "Version": ""
+          }
+        ]
+      }
+    ],
+    "standards": [],
+    "classes": null,
+    "domains": null,
+    "entities": {
+      "Include": [
+      ]
+    },
+    "rule_type": "JSONata",
+    "conditions": "study[$count(documentedBy[templateName=\"M11\"])>1].documentedBy[templateName=\"M11\"].{\"instanceType\":instanceType,\"id\":id,\"path\":_path,\"templateName\": templateName}",
+    "actions": [
+      {
+        "name": "generate_dataset_error_objects",
+        "params": {
+          "message": "More than 1 document definition is specified with a template name defined as \"M11\"."
+        }
+      }
+    ],
+    "use_case": null,
+    "data_structures": null,
+    "status": "Published",
+    "output_variables": [
+      "isInstance",
+      "templateName",
+      "id"
+    ]
+  }
+}

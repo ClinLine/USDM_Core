@@ -49,15 +49,35 @@ def translate_rules_dictionary(origin_dict: dict, new_dict: dict):
         pickle.dump(origin_dict, f)
 
 
+def merge_packages(
+    base_rules: str,
+    base_dictionary: str,
+    add_rules: str,
+    add_dictionary: str,
+):
+    base_rules_pkl = load_pkl(base_rules)
+    base_dictionary_pkl = load_pkl(base_dictionary)
+
+    add_rules = load_json(add_rules)
+    add_dictionary = load_json(add_dictionary)
+
+    translate_rules(base_rules_pkl, add_rules)
+    translate_rules_dictionary(base_dictionary_pkl, add_dictionary)
+
+
 def main():
-    base_rules_pkl = load_pkl("../cache/rules.pkl")
-    base_dictionary_pkl = load_pkl("../cache/rules_dictionary.pkl")
+    base_rules = "../cache/rules.pkl"
+    base_dictionary = "../cache/rules_dictionary.pkl"
 
-    clinline_rules = load_json("ClinLine_extension_rules.json")
-    clinline_dictionary = load_json("ClinLine_extension_rules_dictionairy.json")
+    # clinline_rules = "ClinLine_extension_rules.json"
+    # clinline_dictionary = "ClinLine_extension_rules_dictionairy.json"
 
-    translate_rules(base_rules_pkl, clinline_rules)
-    translate_rules_dictionary(base_dictionary_pkl, clinline_dictionary)
+    M11_rules = "M11_extensions.json"
+    M11_dictionary = "M11_extensions_rules.json"
+
+    merge_packages(
+        base_rules, base_dictionary, add_rules=M11_rules, add_dictionary=M11_dictionary
+    )
 
 
 main()
