@@ -1,0 +1,83 @@
+{
+  "": {
+    "core_id": "",
+    "author": "ClinLine",
+    "reference": [
+      [
+        {
+          "Citations": [
+            {
+              "Cited_Guidance": "",
+              "Document": ""
+            }
+          ],
+          "Origin": "",
+          "Rule_Identifier": {
+            "Id": "",
+            "Version": ""
+          },
+          "Version": ""
+        }
+      ]
+    ],
+    "sensitivity": "",
+    "executability": "",
+    "description": "",
+    "authorities": [
+      {
+        "Organization": "ClinLine",
+        "Standards": [
+                    {
+            "Name": "",
+            "References": [
+              {
+                "Citations": [
+                  {
+                    "Cited_Guidance": "",
+                    "Document": ""
+                  }
+                ],
+                "Origin": "",
+                "Rule_Identifier": {
+                  "Id": "",
+                  "Version": ""
+                },
+                "Version": ""
+              }
+            ],
+            "Version": ""
+          }
+        ]
+      }
+    ],
+    "standards": [
+      {
+        "Name": "",
+        "Version": "",
+        "Substandard": null
+      }
+    ],
+    "classes": null,
+    "domains": null,
+    "entities": {
+      "Include": [
+      ]
+    },
+    "rule_type": "JSONata",
+    "conditions": "",
+    "actions": [
+      {
+        "name": "",
+        "params": {
+          "message": ""
+        }
+      }
+    ],
+    "use_case": null,
+    "data_structures": null,
+    "status": "Published",
+    "output_variables": [
+
+    ]
+  }
+}

@@ -1,0 +1,258 @@
+{
+  "UEXT0002": {
+    "core_id": "UEXT0002",
+    "author": "ClinLine",
+    "reference": [
+      [
+        {
+          "Citations": [
+            {
+              "Cited_Guidance": "",
+              "Document": "Find_out_which_document.xlsx"
+            }
+          ],
+          "Origin": "ClinLine",
+          "Rule_Identifier": {
+            "Id": "UEXT0002",
+            "Version": "1"
+          },
+          "Version": "1.0"
+        }
+      ]
+    ],
+    "sensitivity": "Record",
+    "executability": "fully executable",
+    "description": "An extension attribute should have exactly one value attribute specified or include nested extension attributes not both.",
+    "authorities": [
+      {
+        "Organization": "ClinLine",
+        "Standards": [
+                    {
+            "Name": "",
+            "References": [
+              {
+                "Citations": [
+                  {
+                    "Cited_Guidance": "",
+                    "Document": ""
+                  }
+                ],
+                "Origin": "",
+                "Rule_Identifier": {
+                  "Id": "",
+                  "Version": ""
+                },
+                "Version": ""
+              }
+            ],
+            "Version": ""
+          }
+        ]
+      }
+    ],
+    "standards": [
+      {
+        "Name": "USDM",
+        "Version": "4.0",
+        "Substandard": null
+      }
+    ],
+    "classes": null,
+    "domains": null,
+    "entities": {
+      "Include": [
+      ]
+    },
+    "rule_type": "JSONata",
+    "conditions": "**@$pt.$distinct(\n    [$pt.extensionAttributes@$ea.\n    $ea.{\"id\": id,\n         \"instanceType\": instanceType,\n         \"path\": _path,\n         \"extensionAttributes\": extensionAttributes ? \"Defined\",\n         \"valueExtensionClass\": valueExtensionClass ? \"Defined\",\n         \"valueId\": valueId,\n         \"valueBoolean\": valueBoolean,\n         \"valueCode\": valueCode.id ? valueCode.decode,\n         \"valueString\": valueString,\n         \"valueRange\": valueRange.id ? (($exists(valueRange.minValue.value) ? valueRange.minValue.value & \" - \") & valueRange.maxValue.value),\n         \"valueQuantity\": valueQuantity,\n         \"valueInteger\": valueInteger,\n         \"specifiedItems\": (extensionAttributes ? 1:0)+(valueExtensionClass ? 1:0)+(valueId?1:0)+(valueBoolean != null ? 1:0)+(valueCode?1:0)+(valueString?1:0)+(valueRange?1:0)+(valueQuantity?1:0)+(valueInteger?1:0)}]\n         [specifiedItems != 1])\n",
+    "actions": [
+      {
+        "name": "generate_dataset_error_objects",
+        "params": {
+          "message": "Either more than 1 extension attribute type or class is specified and/or none are specified."
+        }
+      }
+    ],
+    "use_case": null,
+    "data_structures": null,
+    "status": "Published",
+    "output_variables": [
+      "id",
+      "NumberOfSpecifiedItems",
+      "valueExtensionClass",
+      "valueId",
+      "valueBoolean",
+      "valueCode",
+      "valueString",
+      "valueRange",
+      "valueQuantity",
+      "valueInteger"
+    ]
+  },
+  "UEXT0003": {
+    "core_id": "UEXT0003",
+    "author": "ClinLine",
+    "reference": [
+      [
+        {
+          "Citations": [
+            {
+              "Cited_Guidance": "",
+              "Document": "Unkown.XML"
+            }
+          ],
+          "Origin": "",
+          "Rule_Identifier": {
+            "Id": "",
+            "Version": ""
+          },
+          "Version": ""
+        }
+      ]
+    ],
+    "sensitivity": "Record",
+    "executability": "fully executable",
+    "description": "The structure within a specified extension identified by a distinct url must be logically consistent throughout the data model e.g. a url in combination with the value type or nested extensions should be unique.",
+    "authorities": [
+      {
+        "Organization": "ClinLine",
+        "Standards": [
+                    {
+            "Name": "",
+            "References": [
+              {
+                "Citations": [
+                  {
+                    "Cited_Guidance": "",
+                    "Document": ""
+                  }
+                ],
+                "Origin": "",
+                "Rule_Identifier": {
+                  "Id": "",
+                  "Version": ""
+                },
+                "Version": ""
+              }
+            ],
+            "Version": ""
+          }
+        ]
+      }
+    ],
+    "standards": [
+      {
+        "Name": "USDM",
+        "Version": "4.0",
+        "Substandard": null
+      }
+    ],
+    "classes": null,
+    "domains": null,
+    "entities": {
+      "Include": [
+      ]
+    },
+    "rule_type": "JSONata",
+    "conditions": "**@$sd\n    .\n    $filter($sd.extensionAttributes.\n        {\"id\": id, \n        \"url\": url, \n        \"instanceType\": instanceType,\n        \"_path\": _path,\n        \"Defined\": extensionAttributes ? \"Attributes\"  : valueExtensionClass ? \"Class\" :\n                    valueId ? \"Id\" : valueBoolean ? \"Boolean\" : \n                    valueCode ? \"Code\" : valueString ? \"String\" : \n                    valueRange ? \"Range\": valueQuantity ? \"Quantity\" : \n                    valueInteger ? \"Integer\"}\n    ,function($v,$i,$a)\n      {\n        $count($a[url=$v.url and Defined!=$v.Defined])>0\n      })",
+    "actions": [
+      {
+        "name": "generate_dataset_error_objects",
+        "params": {
+          "message": "The combination of the url with a specified value type is not unique."
+        }
+      }
+    ],
+    "use_case": null,
+    "data_structures": null,
+    "status": "Published",
+    "output_variables": [
+      "id",
+      "url",
+      "instanceType",
+      "Defined"
+    ]
+  },
+  "UEXT0004": {
+    "core_id": "UEXT0004",
+    "author": "ClinLine",
+    "reference": [
+      [
+        {
+          "Citations": [
+            {
+              "Cited_Guidance": "",
+              "Document": "Unkown.XML"
+            }
+          ],
+          "Origin": "",
+          "Rule_Identifier": {
+            "Id": "",
+            "Version": ""
+          },
+          "Version": ""
+        }
+      ]
+    ],
+    "sensitivity": "Record",
+    "executability": "fully executable",
+    "description": "If specified, an extension valueCode value must contain an code value in USDM code complex datatype format.",
+    "authorities": [
+      {
+        "Organization": "ClinLine",
+        "Standards": [
+                    {
+            "Name": "",
+            "References": [
+              {
+                "Citations": [
+                  {
+                    "Cited_Guidance": "",
+                    "Document": ""
+                  }
+                ],
+                "Origin": "",
+                "Rule_Identifier": {
+                  "Id": "",
+                  "Version": ""
+                },
+                "Version": ""
+              }
+            ],
+            "Version": ""
+          }
+        ]
+      }
+    ],
+    "standards": [
+      {
+        "Name": "USDM",
+        "Version": "4.0",
+        "Substandard": null
+      }
+    ],
+    "classes": null,
+    "domains": null,
+    "entities": {
+      "Include": [
+      ]
+    },
+    "rule_type": "JSONata",
+    "conditions": "**@$pt.$distinct(\n    [$pt.extensionAttributes@$ea.\n    $ea.{\"id\": id,\n         \"instanceType\": instanceType,\n         \"valueCode\": valueCode? true,\n         \"missingAttribute\": \n             $exists(valueCode.id)=false or $exists(valueCode.code)=false or $exists(valueCode.decode)=false or \n             $exists(valueCode.codeSystem)=false or $exists(valueCode.codeSystemVersion)=false or valueCode.instanceType != \"Code\",\n         \"path\": _path}][valueCode and missingAttribute=true])",
+    "actions": [
+      {
+        "name": "generate_dataset_error_objects",
+        "params": {
+          "message": "The combination of the url with a specified value type is not unique."
+        }
+      }
+    ],
+    "use_case": null,
+    "data_structures": null,
+    "status": "Published",
+    "output_variables": [
+      "id"
+    ]
+  }
+
+}
