@@ -1,700 +1,134 @@
-[
-  {
-    "core_id": "CORE-000402",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000403",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000404",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000407",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000408",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000414",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000416",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000417",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000419",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000423",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000428",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000449",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000804",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000805",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000807",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000808",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000809",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000811",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000815",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000816",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000817",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000818",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000819",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000820",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000822",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000823",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000824",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000825",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000826",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000827",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000829",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000830",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000833",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000835",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000836",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000837",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000838",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000839",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000840",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000849",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000851",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000854",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000855",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000856",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000857",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000858",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000860",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000861",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000868",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000870",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000871",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000874",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000875",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000877",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000878",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000879",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000900",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000904",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000905",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000907",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000933",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000939",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000940",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000941",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000942",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000945",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000948",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000950",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000954",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000961",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-000962",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000967",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000978",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000979",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000980",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000982",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000987",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000988",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000989",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000990",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000991",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000992",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-000996",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001002",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001003",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001005",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001006",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001009",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001014",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001016",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001017",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001023",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001026",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001030",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001033",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001035",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001036",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001038",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001039",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001045",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001047",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001048",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001049",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001054",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001056",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001058",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001059",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001060",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001061",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001062",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001063",
-    "packages": [
-      "Handbook 1"
-    ]
-  },
-  {
-    "core_id": "CORE-001066",
-    "packages": [
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001074",
-    "packages": [
-      "Handbook 1",
-      "Handbook 2"
-    ]
-  },
-  {
-    "core_id": "CORE-001077",
-    "packages": [
-      "Handbook 1"
-    ]
-  }
-]
+{
+  "Handbook 1": [
+    "CORE-000414",
+    "CORE-000416",
+    "CORE-000419",
+    "CORE-000449",
+    "CORE-000805",
+    "CORE-000808",
+    "CORE-000809",
+    "CORE-000815",
+    "CORE-000817",
+    "CORE-000823",
+    "CORE-000833",
+    "CORE-000835",
+    "CORE-000836",
+    "CORE-000839",
+    "CORE-000849",
+    "CORE-000854",
+    "CORE-000855",
+    "CORE-000857",
+    "CORE-000860",
+    "CORE-000861",
+    "CORE-000871",
+    "CORE-000874",
+    "CORE-000875",
+    "CORE-000879",
+    "CORE-000907",
+    "CORE-000933",
+    "CORE-000939",
+    "CORE-000940",
+    "CORE-000945",
+    "CORE-000948",
+    "CORE-000962",
+    "CORE-000967",
+    "CORE-000978",
+    "CORE-000979",
+    "CORE-000980",
+    "CORE-000982",
+    "CORE-000987",
+    "CORE-000988",
+    "CORE-000989",
+    "CORE-000990",
+    "CORE-000991",
+    "CORE-000992",
+    "CORE-000996",
+    "CORE-001002",
+    "CORE-001003",
+    "CORE-001005",
+    "CORE-001009",
+    "CORE-001014",
+    "CORE-001017",
+    "CORE-001023",
+    "CORE-001026",
+    "CORE-001033",
+    "CORE-001036",
+    "CORE-001048",
+    "CORE-001049",
+    "CORE-001054",
+    "CORE-001056",
+    "CORE-001058",
+    "CORE-001059",
+    "CORE-001060",
+    "CORE-001061",
+    "CORE-001063",
+    "CORE-001074",
+    "CORE-001077"
+  ],
+  "Handbook 2": [
+    "CORE-000402",
+    "CORE-000403",
+    "CORE-000404",
+    "CORE-000407",
+    "CORE-000408",
+    "CORE-000414",
+    "CORE-000416",
+    "CORE-000417",
+    "CORE-000419",
+    "CORE-000423",
+    "CORE-000428",
+    "CORE-000449",
+    "CORE-000804",
+    "CORE-000807",
+    "CORE-000809",
+    "CORE-000811",
+    "CORE-000816",
+    "CORE-000818",
+    "CORE-000819",
+    "CORE-000820",
+    "CORE-000822",
+    "CORE-000824",
+    "CORE-000825",
+    "CORE-000826",
+    "CORE-000827",
+    "CORE-000829",
+    "CORE-000830",
+    "CORE-000835",
+    "CORE-000836",
+    "CORE-000837",
+    "CORE-000838",
+    "CORE-000839",
+    "CORE-000840",
+    "CORE-000849",
+    "CORE-000851",
+    "CORE-000856",
+    "CORE-000858",
+    "CORE-000868",
+    "CORE-000870",
+    "CORE-000877",
+    "CORE-000878",
+    "CORE-000900",
+    "CORE-000904",
+    "CORE-000905",
+    "CORE-000941",
+    "CORE-000942",
+    "CORE-000945",
+    "CORE-000948",
+    "CORE-000950",
+    "CORE-000954",
+    "CORE-000961",
+    "CORE-001006",
+    "CORE-001016",
+    "CORE-001026",
+    "CORE-001030",
+    "CORE-001035",
+    "CORE-001038",
+    "CORE-001039",
+    "CORE-001045",
+    "CORE-001047",
+    "CORE-001048",
+    "CORE-001062",
+    "CORE-001066",
+    "CORE-001074"
+  ]
+}

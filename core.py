@@ -699,7 +699,8 @@ def validate(  # noqa
         validation_packages_directory = os.path.join(
             os.path.dirname(__file__), "resources", "validation_packages"
         )
-        found_validation_packages: list[dict] = []
+
+        found_validation_packages: list[dict[str, list]] = []
 
         for entry in os.scandir(validation_packages_directory):
             if entry.is_file():
@@ -712,7 +713,8 @@ def validate(  # noqa
                 with open(file_path) as f:
                     try:
                         found_json = json.load(f)
-                        found_validation_packages.append(found_json)
+                        if type(found_json) is dict:
+                            found_validation_packages.append(found_json)
                     except json.JSONDecodeError:
                         logger.error(
                             f"Validation package at resources/validation_packages/{entry.name} contains invalid JSON"
@@ -728,21 +730,17 @@ def validate(  # noqa
         filtered_core_ids: set[str] = set()
         found_package_names: set[str] = set()
 
-        for rule_data in found_validation_packages:
-            for rule in rule_data:
-                packages = rule.get("packages", [])
-                if any(
-                    check_package in validation_packages for check_package in packages
-                ):
-                    found_core_id: str | None = rule.get("core_id", None)
+        for package_data in found_validation_packages:
+            for wanted_package in validation_packages:
+                found_core_ids = package_data.get(wanted_package, None)
 
-                    if not found_core_id:
-                        continue
+                if not found_core_ids:
+                    continue
 
-                    for package in packages:
-                        found_package_names.add(package)
+                for core_id in found_core_ids:
+                    filtered_core_ids.add(core_id)
 
-                    filtered_core_ids.add(found_core_id)
+                found_package_names.add(wanted_package)
 
         if not filtered_core_ids:
             logger.error(
