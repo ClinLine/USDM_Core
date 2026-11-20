@@ -1,5 +1,7 @@
 import json
+import os
 import pickle
+from pathlib import Path
 
 # maybe? I wanna specifically not save or have those files anywhere on the server
 # Server is also a maybe?
@@ -49,6 +51,27 @@ def translate_rules_dictionary(origin_dict: dict, new_dict: dict):
         pickle.dump(origin_dict, f)
 
 
+def pickle_validation_packages():
+    validation_packages_directory = str(
+        Path(__file__).parent.parent / "validation_packages"
+    )
+
+    for entry in os.scandir(validation_packages_directory):
+        if entry.is_file():
+            file_path = Path(entry.path)
+
+            if file_path.suffix != ".json":
+                continue
+
+            with open(file_path, "r") as f:
+                json_data = json.load(f)
+
+            with open(
+                validation_packages_directory + "/" + file_path.name + ".pkl", "wb"
+            ) as f:
+                pickle.dump(json_data, f)
+
+
 def merge_packages(
     base_rules: str,
     base_dictionary: str,
@@ -78,6 +101,8 @@ def main():
     merge_packages(
         base_rules, base_dictionary, add_rules=M11_rules, add_dictionary=M11_dictionary
     )
+
+    pickle_validation_packages()
 
 
 main()
