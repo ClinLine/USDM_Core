@@ -7,8 +7,8 @@
         {
           "Citations": [
             {
-              "Cited_Guidance": "",
-              "Document": "Find_out_which_document.xlsx"
+              "Cited_Guidance": "An extension attribute should have exactly one value attribute specified or include nested extension attributes not both.",
+              "Document": "TODO: FIND OUT WHICH DOCUMENT.xlsx"
             }
           ],
           "Origin": "ClinLine",
@@ -25,27 +25,27 @@
     "description": "An extension attribute should have exactly one value attribute specified or include nested extension attributes not both.",
     "authorities": [
       {
-        "Organization": "ClinLine",
+        "Organization": "CDISC",
         "Standards": [
                     {
-            "Name": "",
+            "Name": "ClinLine",
             "References": [
               {
                 "Citations": [
                   {
-                    "Cited_Guidance": "",
-                    "Document": ""
+                    "Cited_Guidance": "An extension attribute should have exactly one value attribute specified or include nested extension attributes not both.",
+                    "Document": "TODO: FINDOUTWHICHONE.xlsx"
                   }
                 ],
-                "Origin": "",
+                "Origin": "ClinLine Validation Package Extension",
                 "Rule_Identifier": {
-                  "Id": "",
-                  "Version": ""
+                  "Id": "UEXT0002",
+                  "Version": "1"
                 },
-                "Version": ""
+                "Version": "1.0"
               }
             ],
-            "Version": ""
+            "Version": "1.0"
           }
         ]
       }
@@ -64,12 +64,12 @@
       ]
     },
     "rule_type": "JSONata",
-    "conditions": "**@$pt.$distinct(\n    [$pt.extensionAttributes@$ea.\n    $ea.{\"id\": id,\n         \"instanceType\": instanceType,\n         \"path\": _path,\n         \"extensionAttributes\": extensionAttributes ? \"Defined\",\n         \"valueExtensionClass\": valueExtensionClass ? \"Defined\",\n         \"valueId\": valueId,\n         \"valueBoolean\": valueBoolean,\n         \"valueCode\": valueCode.id ? valueCode.decode,\n         \"valueString\": valueString,\n         \"valueRange\": valueRange.id ? (($exists(valueRange.minValue.value) ? valueRange.minValue.value & \" - \") & valueRange.maxValue.value),\n         \"valueQuantity\": valueQuantity,\n         \"valueInteger\": valueInteger,\n         \"specifiedItems\": (extensionAttributes ? 1:0)+(valueExtensionClass ? 1:0)+(valueId?1:0)+(valueBoolean != null ? 1:0)+(valueCode?1:0)+(valueString?1:0)+(valueRange?1:0)+(valueQuantity?1:0)+(valueInteger?1:0)}]\n         [specifiedItems != 1])\n",
+    "conditions":"**@$pt.$distinct(\n    [$pt.extensionAttributes@$ea.\n    $ea.{\"id\": id,\n         \"instanceType\": instanceType,\n         \"path\": _path,\n         \"extensionUrl\": url,\n         \"extensionAttributes\": extensionAttributes ? \"Defined\",\n         \"valueExtensionClass\": valueExtensionClass ? \"Defined\",\n         \"valueId\": valueId,\n         \"valueBoolean\": valueBoolean,\n         \"valueCode\": valueCode.id ? valueCode.decode,\n         \"valueString\": valueString,\n         \"valueRange\": valueRange.id ? (($exists(valueRange.minValue.value) ? valueRange.minValue.value & \" - \") & valueRange.maxValue.value),\n         \"valueQuantity\": valueQuantity.value,\n         \"valueInteger\": valueInteger,\n         \"specifiedItems\": (extensionAttributes ? \"extensionAttributes defined / \") & (valueExtensionClass ? \"valueExtensionClass defined / \")\n                             & (valueId ? \"valueId=\" & valueId & \" / \")  & (valueBoolean ? \"valueBoolean=\" & valueBoolean & \" / \")\n                             &  (valueCode ? \"valueCode.decode=\" & valueCode.decode & \" / \") & (valueString ? \"valueString=\" & valueString & \" / \")\n                             & (valueRange ? \"valueRange=\" & (($exists(valueRange.minValue.value) ? valueRange.minValue.value & \" - \") & valueRange.maxValue.value) & \" / \")  \n                             & (valueQuantity ? \"valueQuantity=\" & valueQuantity.value & \" / \") &  (valueInteger ? \"valueInteger=\" & valueInteger & \" / \")  ,\n         \"noOfSpecifiedItems\": (extensionAttributes ? 1:0)+(valueExtensionClass ? 1:0)+(valueId?1:0)+(valueBoolean != null ? 1:0)+(valueCode?1:0)+(valueString?1:0)+(valueRange?1:0)+(valueQuantity?1:0)+(valueInteger?1:0)}]\n         [noOfSpecifiedItems != 1])",
     "actions": [
       {
         "name": "generate_dataset_error_objects",
         "params": {
-          "message": "Either more than 1 extension attribute type or class is specified and/or none are specified."
+          "message": "Either more than 1 extension attribute type or class is specified and/or none are specified for an extension."
         }
       }
     ],
@@ -78,15 +78,9 @@
     "status": "Published",
     "output_variables": [
       "id",
-      "NumberOfSpecifiedItems",
-      "valueExtensionClass",
-      "valueId",
-      "valueBoolean",
-      "valueCode",
-      "valueString",
-      "valueRange",
-      "valueQuantity",
-      "valueInteger"
+      "extensionUrl",
+      "noOfSpecifiedItems",
+      "specifiedItems"
     ]
   },
   "UEXT0003": {
@@ -97,16 +91,16 @@
         {
           "Citations": [
             {
-              "Cited_Guidance": "",
-              "Document": "Unkown.XML"
+              "Cited_Guidance": "The structure within a specified extension identified by a distinct url must be logically consistent throughout the data model e.g. a url in combination with the value type or nested extensions should be unique.",
+              "Document": "CHANGETHIS.XML"
             }
           ],
-          "Origin": "",
+          "Origin": "ClinLine",
           "Rule_Identifier": {
-            "Id": "",
-            "Version": ""
+            "Id": "UEXT0003",
+            "Version": "1"
           },
-          "Version": ""
+          "Version": "1.0"
         }
       ]
     ],
@@ -115,27 +109,27 @@
     "description": "The structure within a specified extension identified by a distinct url must be logically consistent throughout the data model e.g. a url in combination with the value type or nested extensions should be unique.",
     "authorities": [
       {
-        "Organization": "ClinLine",
+        "Organization": "CDISC",
         "Standards": [
                     {
-            "Name": "",
+            "Name": "ClinLine",
             "References": [
               {
                 "Citations": [
                   {
-                    "Cited_Guidance": "",
-                    "Document": ""
+                    "Cited_Guidance": "The structure within a specified extension identified by a distinct url must be logically consistent throughout the data model e.g. a url in combination with the value type or nested extensions should be unique.",
+                    "Document": "CHANGETHIS.xml"
                   }
                 ],
-                "Origin": "",
+                "Origin": "ClinLine Validation Package Extension",
                 "Rule_Identifier": {
-                  "Id": "",
-                  "Version": ""
+                  "Id": "UEXT0003",
+                  "Version": "1.0"
                 },
-                "Version": ""
+                "Version": "1.0"
               }
             ],
-            "Version": ""
+            "Version": "4.0"
           }
         ]
       }
@@ -154,7 +148,7 @@
       ]
     },
     "rule_type": "JSONata",
-    "conditions": "**@$sd\n    .\n    $filter($sd.extensionAttributes.\n        {\"id\": id, \n        \"url\": url, \n        \"instanceType\": instanceType,\n        \"_path\": _path,\n        \"Defined\": extensionAttributes ? \"Attributes\"  : valueExtensionClass ? \"Class\" :\n                    valueId ? \"Id\" : valueBoolean ? \"Boolean\" : \n                    valueCode ? \"Code\" : valueString ? \"String\" : \n                    valueRange ? \"Range\": valueQuantity ? \"Quantity\" : \n                    valueInteger ? \"Integer\"}\n    ,function($v,$i,$a)\n      {\n        $count($a[url=$v.url and Defined!=$v.Defined])>0\n      })",
+    "conditions": "**@$sd\n    .\n    $filter($sd.extensionAttributes.\n        {\"id\": id, \n        \"extensionUrl\": url, \n        \"instanceType\": instanceType,\n        \"_path\": _path,\n        \"defined\": extensionAttributes ? \"extensionAttributes\"  : valueExtensionClass ? \"valueExtensionClass\" :\n                    valueId ? \"valueId\" : valueBoolean ? \"valueBoolean\" : \n                    valueCode ? \"valueCode\" : valueString ? \"valueString\" : \n                    valueRange ? \"valueRange\": valueQuantity ? \"valueQuantity\" : \n                    valueInteger ? \"valueInteger\"}\n    ,function($v,$i,$a)\n      {\n        $count($a[extensionUrl=$v.extensionUrl and defined!=$v.defined])>0\n      })",
     "actions": [
       {
         "name": "generate_dataset_error_objects",
@@ -168,9 +162,8 @@
     "status": "Published",
     "output_variables": [
       "id",
-      "url",
-      "instanceType",
-      "Defined"
+      "extensionUrl",
+      "defined"
     ]
   },
   "UEXT0004": {
@@ -181,16 +174,16 @@
         {
           "Citations": [
             {
-              "Cited_Guidance": "",
-              "Document": "Unkown.XML"
+              "Cited_Guidance": "If specified, an extension valueCode value must contain an code value in USDM code complex datatype format.",
+              "Document": "CHANGETHIS.XML"
             }
           ],
-          "Origin": "",
+          "Origin": "ClinLine",
           "Rule_Identifier": {
-            "Id": "",
-            "Version": ""
+            "Id": "UEXT0004",
+            "Version": "1"
           },
-          "Version": ""
+          "Version": "1.0"
         }
       ]
     ],
@@ -199,27 +192,27 @@
     "description": "If specified, an extension valueCode value must contain an code value in USDM code complex datatype format.",
     "authorities": [
       {
-        "Organization": "ClinLine",
+        "Organization": "CDISC",
         "Standards": [
                     {
-            "Name": "",
+            "Name": "ClinLine",
             "References": [
               {
                 "Citations": [
                   {
-                    "Cited_Guidance": "",
-                    "Document": ""
+                    "Cited_Guidance": "If specified, an extension valueCode value must contain an code value in USDM code complex datatype format.",
+                    "Document": "CHANGETHIS.xml"
                   }
                 ],
-                "Origin": "",
+                "Origin": "ClinLine Validation Package Extension",
                 "Rule_Identifier": {
-                  "Id": "",
-                  "Version": ""
+                  "Id": "UEXT0004",
+                  "Version": "1.0"
                 },
-                "Version": ""
+                "Version": "1.0"
               }
             ],
-            "Version": ""
+            "Version": "4.0"
           }
         ]
       }
@@ -238,12 +231,12 @@
       ]
     },
     "rule_type": "JSONata",
-    "conditions": "**@$pt.$distinct(\n    [$pt.extensionAttributes@$ea.\n    $ea.{\"id\": id,\n         \"instanceType\": instanceType,\n         \"valueCode\": valueCode? true,\n         \"missingAttribute\": \n             $exists(valueCode.id)=false or $exists(valueCode.code)=false or $exists(valueCode.decode)=false or \n             $exists(valueCode.codeSystem)=false or $exists(valueCode.codeSystemVersion)=false or valueCode.instanceType != \"Code\",\n         \"path\": _path}][valueCode and missingAttribute=true])",
+    "conditions": "($lkp:=**.id; **.extensionAttributes[valueId and (valueId in $lkp)=false].\n    {   \"id\": id,\n        \"extensionUrl\": url,\n        \"path\": _path,\n        \"instanceType\": instanceType,\n        \"valueId\": valueId})",
     "actions": [
       {
         "name": "generate_dataset_error_objects",
         "params": {
-          "message": "The combination of the url with a specified value type is not unique."
+          "message": "The referenced id (using attribute valueId) is not used as an id value of an instance stored within the same USDM version."
         }
       }
     ],
@@ -251,8 +244,9 @@
     "data_structures": null,
     "status": "Published",
     "output_variables": [
-      "id"
+      "id",
+      "extensionUrl",
+      "valueId"
     ]
   }
-
 }

@@ -25,8 +25,7 @@ def load_json(file_path):
 
 def translate_rules(origin_rules: dict, new_rules: dict):
     for rule_id, rule in new_rules.items():
-        if not origin_rules.get(rule_id, None):
-            origin_rules[rule_id] = rule
+        origin_rules[rule_id] = rule
 
     with open("rules.pkl", "wb") as f:
         pickle.dump(origin_rules, f)
@@ -92,14 +91,17 @@ def main():
     base_rules = "../cache/rules.pkl"
     base_dictionary = "../cache/rules_dictionary.pkl"
 
-    # clinline_rules = "ClinLine_extension_rules.json"
-    # clinline_dictionary = "ClinLine_extension_rules_dictionairy.json"
+    clinline_rules = "ClinLine_extension_rules.json"
+    clinline_dictionary = "ClinLine_extension_rules_dictionairy.json"
 
-    M11_rules = "M11_extensions.json"
-    M11_dictionary = "M11_extensions_rules.json"
+    # M11_rules = "M11_extensions.json"
+    # M11_dictionary = "M11_extensions_rules.json"
 
     merge_packages(
-        base_rules, base_dictionary, add_rules=M11_rules, add_dictionary=M11_dictionary
+        base_rules,
+        base_dictionary,
+        add_rules=clinline_rules,
+        add_dictionary=clinline_dictionary,
     )
 
     pickle_validation_packages()

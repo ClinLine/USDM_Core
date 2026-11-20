@@ -151,5 +151,242 @@
       "templateName",
       "id"
     ]
+  },
+  "M110003": {
+    "core_id": "M110003",
+    "author": "ClinLine",
+    "reference": [
+      [
+        {
+          "Citations": [
+            {
+              "Cited_Guidance": "",
+              "Document": ""
+            }
+          ],
+          "Origin": "",
+          "Rule_Identifier": {
+            "Id": "",
+            "Version": ""
+          },
+          "Version": ""
+        }
+      ]
+    ],
+    "sensitivity": "Record",
+    "executability": "partially executable - possible underreporting",
+    "description": "The sponsor confidentiality statement must be stored as a narrative content item, if applicable.",
+    "authorities": [
+      {
+        "Organization": "ClinLine",
+        "Standards": [
+                    {
+            "Name": "",
+            "References": [
+              {
+                "Citations": [
+                  {
+                    "Cited_Guidance": "",
+                    "Document": ""
+                  }
+                ],
+                "Origin": "",
+                "Rule_Identifier": {
+                  "Id": "",
+                  "Version": ""
+                },
+                "Version": ""
+              }
+            ],
+            "Version": ""
+          }
+        ]
+      }
+    ],
+    "standards": [],
+    "classes": null,
+    "domains": null,
+    "entities": {
+      "Include": [
+      ]
+    },
+    "rule_type": "JSONata",
+    "conditions": "study.versions[\"Sponsor\" in roles.code.decode and $count(narrativeContentItems) = 0].{\n    \"instanceType\": instanceType,\n    \"id\": id,\n    \"ContainsSponsorRole\": \"Sponsor\" in roles.code.decode,\n    \"HasNarrativeContentItems\": $count(narrativeContentItems) > 0\n}",
+    "actions": [
+      {
+        "name": "generate_dataset_error_objects",
+        "params": {
+          "message": "No identifiable sponsor confidentiality statement is stored in USDM."
+        }
+      }
+    ],
+    "use_case": null,
+    "data_structures": null,
+    "status": "Published",
+    "output_variables": [
+      "isInstanceType",
+      "id",
+      "ContainsSponsorRole",
+      "HasNarrativeContentItems"
+    ]
+  },
+  "M110004": {
+    "core_id": "M110004",
+    "author": "ClinLine",
+    "reference": [
+      [
+        {
+          "Citations": [
+            {
+              "Cited_Guidance": "",
+              "Document": ""
+            }
+          ],
+          "Origin": "",
+          "Rule_Identifier": {
+            "Id": "",
+            "Version": ""
+          },
+          "Version": ""
+        }
+      ]
+    ],
+    "sensitivity": "Record",
+    "executability": "partially executable - possible underreporting",
+    "description": "The Trial Acronym must be stored in the StudyTitle class, if applicable.",
+    "authorities": [
+      {
+        "Organization": "ClinLine",
+        "Standards": [
+                    {
+            "Name": "",
+            "References": [
+              {
+                "Citations": [
+                  {
+                    "Cited_Guidance": "",
+                    "Document": ""
+                  }
+                ],
+                "Origin": "",
+                "Rule_Identifier": {
+                  "Id": "",
+                  "Version": ""
+                },
+                "Version": ""
+              }
+            ],
+            "Version": ""
+          }
+        ]
+      }
+    ],
+    "standards": [],
+    "classes": null,
+    "domains": null,
+    "entities": {
+      "Include": [
+      ]
+    },
+    "rule_type": "JSONata",
+    "conditions": "$distinct(\n    study.versions.titles[\n        $not(\n            $uppercase(type.code) = \"C94108\"\n                and $uppercase(type.decode) = \"STUDY ACRONYM\"\n                )\n        and instanceType = \"StudyTitle\"].{\n        \"instanceType\": instanceType,\n        \"type\": type.instanceType\n    }\n)",
+    "actions": [
+      {
+        "name": "generate_dataset_error_objects",
+        "params": {
+          "message": "The study version does not have a title of type \"Study Acronym\" (type.code = C94108 or type.decode = \"Study Acronym\", both case insensitive)."
+        }
+      }
+    ],
+    "use_case": null,
+    "data_structures": null,
+    "status": "Published",
+    "output_variables": [
+      "isInstanceType",
+      "type"
+    ]
+  },
+  "M110005": {
+    "core_id": "M110005",
+    "author": "ClinLine",
+    "reference": [
+      [
+        {
+          "Citations": [
+            {
+              "Cited_Guidance": "",
+              "Document": ""
+            }
+          ],
+          "Origin": "",
+          "Rule_Identifier": {
+            "Id": "",
+            "Version": ""
+          },
+          "Version": ""
+        }
+      ]
+    ],
+    "sensitivity": "Record",
+    "executability": "partially executable - possible underreporting",
+    "description": "The M11 protocol version is expected to be specified as a number character.",
+    "authorities": [
+      {
+        "Organization": "ClinLine",
+        "Standards": [
+                    {
+            "Name": "",
+            "References": [
+              {
+                "Citations": [
+                  {
+                    "Cited_Guidance": "",
+                    "Document": ""
+                  }
+                ],
+                "Origin": "",
+                "Rule_Identifier": {
+                  "Id": "",
+                  "Version": ""
+                },
+                "Version": ""
+              }
+            ],
+            "Version": ""
+          }
+        ]
+      }
+    ],
+    "standards": [],
+    "classes": null,
+    "domains": null,
+    "entities": {
+      "Include": [
+      ]
+    },
+    "rule_type": "JSONata",
+    "conditions": "study.documentedBy[templateName = \"M11\"].{\n    \"isNumeric\": $type(versions.version) = \"string\"  and versions.version ~> /^[0-9\\.]{1,}$/m,\n    \"id\":id,\n    \"type\":type,\n    \"versions\":versions\n}[$not(isNumeric)].{\n    \"id\":id,\n    \"code\": type.code,\n    \"codeSystem\": type.codeSystem,\n    \"versionId\": versions.id,\n    \"isNumeric\": isNumeric,\n    \"versionCode\": versions.status.id,\n    \"version\": versions.version\n}\n",
+    "actions": [
+      {
+        "name": "generate_dataset_error_objects",
+        "params": {
+          "message": "The specified version number for of the M11 document has not an numeric format.\n"
+        }
+      }
+    ],
+    "use_case": null,
+    "data_structures": null,
+    "status": "Published",
+    "output_variables": [
+    "id",
+    "code",
+    "codeSystem",
+    "versionId",
+    "isNumeric",
+    "versionCode",
+    "version"
+    ]
   }
+
+
 }
